@@ -6,22 +6,25 @@ int main()
     txClear();
     txSetColour(TX_BLACK);
 
+    HDC koleso1 = txLoadImage("pic/volkte37.bmp");
+    HDC koleso2 = txLoadImage("pic/kakietodiski.bmp");
+    HDC koleso3 = txLoadImage("pic/bbs.bmp");
+
     txRectangle(0, 0, 200, 100);
-    txDrawText (0, 0, 200, 100, "kolesa");
+    txDrawText (0, 0, 200, 100, "Wheels");
     txRectangle(200, 0, 400, 100);
-    txDrawText (200, 0, 400, 100, "motor");
+    txDrawText (200, 0, 400, 100, "Engine");
     txRectangle(400, 0, 600, 100);
-    txDrawText (400, 0, 600, 100, "kapot");
+    txDrawText (400, 0, 600, 100, "Hood");
     txRectangle(600, 0, 800, 100);
-    txDrawText (600, 0, 800, 100, "krisha");
-    txRectangle(1000, 0, 800, 100);
-    txDrawText (800, 0, 1000, 100, "Machina");
+    txDrawText (600, 0, 800, 100, "Roof");
+    Win32::TransparentBlt (txDC(),900,20,200,200,koleso1,0,0,634,634, TX_WHITE);
+    Win32::TransparentBlt (txDC(),900,240,200,200,koleso2,0,0,430,429, TX_WHITE);
+    Win32::TransparentBlt (txDC(),900,480,200,200,koleso3,0,0,900,900, TX_WHITE);
+    Win32::TransparentBlt (txDC(),300,300,200,200,koleso1,0,0,634,634, TX_WHITE);
 
-
-
-
-        HDC car0 = txLoadImage ("car0.bmp");
-        HDC car1 = txLoadImage ("car1.bmp");
+        HDC car0 = txLoadImage ("pic/car0.bmp");
+        HDC car1 = txLoadImage ("pic/car1.bmp");
         HDC car2 = txLoadImage ("car2.bmp");
         HDC car3 = txLoadImage ("car3.bmp");
         HDC car4 = txLoadImage ("car4.bmp");
@@ -32,18 +35,6 @@ int main()
 
 
         Win32::TransparentBlt (txDC(),196,140,200,100,car0,0,0,196,140, TX_WHITE);
-
-        //Win32::TransparentBlt (txDC(),600,240,200,100,car1,0,0,615,369, TX_WHITE);
-        //if (drawcar2)
-        //Win32::TransparentBlt (txDC(),325,250,200,100,car2,0,0,615,369, TX_WHITE);
-        //if (drawcar3)
-        //Win32::TransparentBlt (txDC(),325,250,200,100,car3,0,0,615,369, TX_WHITE);
-        //if (drawcar4)
-       // Win32::TransparentBlt (txDC(),325,250,200,100,car4,0,0,615,369, TX_WHITE);
-        //if (drawcar5)
-        //Win32::TransparentBlt (txDC(),325,250,200,100,car5,0,0,615,369, TX_WHITE);
-        //if (drawcar6)
-       // Win32::TransparentBlt (txDC(),325,250,200,100,car6,0,0,615,369, TX_WHITE);
 
   return 0;
 }
