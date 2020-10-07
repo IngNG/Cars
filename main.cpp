@@ -1,10 +1,46 @@
 #include "TXLib.h"
 
+struct Button2
+{
+    int x;
+    int y;
+    const char* text;
+    int n_pic;
+
+    void draw()
+    {
+        txSelectFont("Comic Sans MS", 20);
+        txRectangle(x, y, x + 200, y + 30);
+        txDrawText (x, y, x + 200, y + 30, text);
+    }
+
+    bool cliiiick()
+    {
+            if (txMouseButtons() == 1 &&
+                txMouseX() >= x       &&  txMouseY() >= y     &&
+                txMouseX() <= x + 200 &&  txMouseY() <= y + 30)
+                return true;
+            else
+                return false;
+    }
+
+    bool focus()
+    {
+            if (txMouseX() >= x       &&  txMouseY() >= y   &&
+                txMouseX() <= x + 200 &&  txMouseY() <= y + 30)
+                return true;
+            else
+                return false;
+    }
+};
+
 struct Button
 {
     int x;
     int y;
     const char* text;
+    int n_vars;
+    Button2 variants[10];
 
     void draw()
     {
@@ -23,7 +59,6 @@ struct Button
                 return false;
     }
 };
-
 
 struct Picture
 {
@@ -45,17 +80,27 @@ int main()
 
 
     Picture aPictures[10];
-    aPictures[0] = {900, 200, 634, 634, txLoadImage("pic/volkte37.bmp")};
-    aPictures[1] = {900, 400, 430, 429, txLoadImage("pic/kakietodiski.bmp")};
-    aPictures[2] = {900, 600, 900, 900, txLoadImage("pic/bbs.bmp")};
+    aPictures[0] = {00, 200, 634, 634, txLoadImage("pic/volkte37.bmp")};
+    aPictures[1] = {00, 400, 430, 429, txLoadImage("pic/kakietodiski.bmp")};
+    aPictures[2] = {00, 600, 900, 900, txLoadImage("pic/bbs.bmp")};
 
 
-    Button btn1 = {0,    0, "ÊÐÛØÀ"};
-    Button btn2 = {200,  0, "ÁÀÌÏÅÐ ÇÀÄ"};
-    Button btn3 = {400,  0, "ÁÀÌÏÅÐ ÏÅÐ"};
-    Button btn4 = {600,  0, "ÊÎË¨ÑÀ"};
-    Button btn5 = {800,  0, "ØÈÏÛ"};
-    Button btn6 = {1000, 0, "ÏÏÏÏÏÏÏÏÏÏ"};
+    Button btn[6];
+    btn[0] = {0,    0, "ëïì³óá", 3,
+                   {{0,  80  , "ëïìåóï1", 0},
+                    {0,  110 , "ëïìåóï2", 1},
+                    {0,  140 , "ëïìåóï3", 2}}};
+    btn[1] = {200,  0, "âáíðåò úáä", 3,
+                   {{0,  80  , "ëïìåóï1", 0},
+                    {0,  110 , "ëïìåóï2", 1},
+                    {0,  140 , "ëïìåóï3", 2}}};
+    btn[2] = {400,  0, "âáíðåò ðåò"};
+    btn[3] = {600,  0, "ëòùûé"};
+    btn[4] = {800,  0, "óðïêìåòá"};
+    btn[5] = {1000, 0, "ð"};
+
+
+    bool kolVisible = false;
 
 
     HDC koleso1 = txLoadImage("pic/volkte37.bmp");
@@ -66,22 +111,6 @@ int main()
     bool drawKoleso3 = false;
 
 
-    HDC car0 = txLoadImage ("pic/car0.bmp");
-    bool drawCar0 = false;
-    HDC car1 = txLoadImage ("pic/car1.bmp");
-    bool drawCar1 = false;
-    HDC car2 = txLoadImage ("car2.bmp");
-    bool drawCar2 = false;
-    HDC car3 = txLoadImage ("car3.bmp");
-    bool drawCar3 = false;
-    HDC car4 = txLoadImage ("car4.bmp");
-    bool drawCar4 = false;
-    HDC car5 = txLoadImage ("car5.bmp");
-    bool drawCar5 = false;
-    HDC car6 = txLoadImage ("car6.bmp");
-    bool drawCar6 = false;
-    HDC car7 = txLoadImage ("car7.bmp");
-    bool drawCar7 = false;
 
     while (!GetAsyncKeyState(VK_ESCAPE))
     {
@@ -89,12 +118,9 @@ int main()
 
         txClear();
         txSetColour(TX_BLACK);
-        btn1.draw();
-        btn2.draw();
-        btn3.draw();
-        btn4.draw();
-        btn5.draw();
-        btn6.draw();
+        for (int i = 0; i < 6; i = i + 1)
+            btn[i].draw();
+
 
         //Íîïêè
         //drawButton(0,   "WHEELS");
@@ -111,14 +137,28 @@ int main()
         //Win32::TransparentBlt (txDC(),300,300,200,200,koleso1,0,0,634,634, TX_WHITE);
 
         //Êëèêè
-        if (btn1.cliiiiick())
+        if (btn[0].cliiiiick())
         {
-            //TABLICA
+            kolVisible = !kolVisible;
+            txSleep(200);
+        }
+
+        if (btn[0].variants[0].focus())
+        {
+            Win32::TransparentBlt (txDC(),200,100,200,200,koleso1,0,0,634,634, TX_WHITE);
+        }
+
+        if (btn[0].variants[0].cliiiick())
+        {
             drawKoleso1 = !drawKoleso1;
             txSleep(200);
         }
 
-
+        if (kolVisible)
+        {
+            for (int i = 0; i < btn[0].n_vars; i = i + 1)
+            btn[0].variants[i].draw();
+        }
 
         if (drawKoleso1)
         {
@@ -128,12 +168,10 @@ int main()
         }
 
 
-         txSleep (1.5);
+         txSleep (15);
          txEnd ();
     }
 
-
-        Win32::TransparentBlt (txDC(),196,140,200,100,car0,0,0,196,140, TX_WHITE);
 
   return 0;
 }
