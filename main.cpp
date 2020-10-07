@@ -84,20 +84,25 @@ int main()
     aPictures[1] = {00, 400, 430, 429, txLoadImage("pic/kakietodiski.bmp")};
     aPictures[2] = {00, 600, 900, 900, txLoadImage("pic/bbs.bmp")};
 
+    Picture cPictures[10];
+    cPictures[0] = {200, 200, 634, 634, txLoadImage("pic/volkte37.bmp")};
+    cPictures[1] = {400, 400, 430, 429, txLoadImage("pic/kakietodiski.bmp")};
+    cPictures[2] = {600, 600, 900, 900, txLoadImage("pic/bbs.bmp")};
+
 
     Button btn[6];
-    btn[0] = {0,    0, "лпміуб", 3,
+    btn[0] = {0,    0, "КРЫША", 3,
                    {{0,  80  , "лпмеуп1", 0},
                     {0,  110 , "лпмеуп2", 1},
                     {0,  140 , "лпмеуп3", 2}}};
-    btn[1] = {200,  0, "вбнрет ъбд", 3,
+    btn[1] = {200,  0, "БАМПЕР ЗАД", 3,
                    {{0,  80  , "лпмеуп1", 0},
                     {0,  110 , "лпмеуп2", 1},
                     {0,  140 , "лпмеуп3", 2}}};
-    btn[2] = {400,  0, "вбнрет рет"};
-    btn[3] = {600,  0, "лтщый"};
-    btn[4] = {800,  0, "урпкметб"};
-    btn[5] = {1000, 0, "р"};
+    btn[2] = {400,  0, "БАМПЕР ПЕР"};
+    btn[3] = {600,  0, "КОЛЁСА"};
+    btn[4] = {800,  0, "ШИПЫ"};
+    btn[5] = {1000, 0, "ПППППППППП"};
 
 
     bool kolVisible = false;
@@ -143,21 +148,24 @@ int main()
             txSleep(200);
         }
 
+        //Всплывающая подсказка по наведению мышки
         if (btn[0].variants[0].focus())
         {
             Win32::TransparentBlt (txDC(),200,100,200,200,koleso1,0,0,634,634, TX_WHITE);
         }
 
+        //Клик на вариант (выбор колеса)
         if (btn[0].variants[0].cliiiick())
         {
             drawKoleso1 = !drawKoleso1;
             txSleep(200);
         }
 
+        //Тут тоже может быть коммент
         if (kolVisible)
         {
             for (int i = 0; i < btn[0].n_vars; i = i + 1)
-            btn[0].variants[i].draw();
+                btn[0].variants[i].draw();
         }
 
         if (drawKoleso1)
@@ -167,6 +175,18 @@ int main()
             //drawPicture(aPictures[2]);
         }
 
+        if (btn[1].cliiiiick())
+        {
+            drawKoleso2 = !drawKoleso2;
+            txSleep(200);
+        }
+
+        if (drawKoleso2 == true)
+        {
+            drawPicture(cPictures[0]);
+            drawPicture(cPictures[1]);
+            drawPicture(cPictures[2]);
+        }
 
          txSleep (15);
          txEnd ();
