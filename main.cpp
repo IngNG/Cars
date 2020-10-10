@@ -78,35 +78,39 @@ int main()
 {
     txCreateWindow(1200,720);
 
-
     Picture aPictures[10];
-    aPictures[0] = {00, 200, 634, 634, txLoadImage("pic/volkte37.bmp")};
-    aPictures[1] = {00, 400, 430, 429, txLoadImage("pic/kakietodiski.bmp")};
-    aPictures[2] = {00, 600, 900, 900, txLoadImage("pic/bbs.bmp")};
+    aPictures[0] = {00, 230, 634, 634, txLoadImage("pic/volkte37.bmp")};
+    aPictures[1] = {00, 330, 430, 429, txLoadImage("pic/kakietodiski.bmp")};
+    aPictures[2] = {00, 430, 900, 900, txLoadImage("pic/bbs.bmp")};
+    aPictures[3] = {00, 530, 200, 200, txLoadImage("pic/to`rjktcj.bmp")};
+    aPictures[4] = {00, 630, 200, 200, txLoadImage("pic/rjktcj.bmp")};
+
 
     Picture cPictures[10];
     cPictures[0] = {200, 200, 634, 634, txLoadImage("pic/volkte37.bmp")};
     cPictures[1] = {400, 400, 430, 429, txLoadImage("pic/kakietodiski.bmp")};
     cPictures[2] = {600, 600, 900, 900, txLoadImage("pic/bbs.bmp")};
 
-
     Button btn[6];
-    btn[0] = {0,    0, "КРЫША", 3,
-                   {{0,  80  , "лпмеуп1", 0},
-                    {0,  110 , "лпмеуп2", 1},
-                    {0,  140 , "лпмеуп3", 2}}};
+    btn[0] = {0,    0, "колёса", 5,
+                   {{0,  80  , "колесо1", 0},
+                    {0,  110 , "колесо2", 1},
+                    {0,  140 , "колесо3", 2},
+                    {0,  170 , "колесо4", 3},
+                    {0,  200 , "колесо5", 4}}};
     btn[1] = {200,  0, "БАМПЕР ЗАД", 3,
                    {{0,  80  , "лпмеуп1", 0},
                     {0,  110 , "лпмеуп2", 1},
-                    {0,  140 , "лпмеуп3", 2}}};
+                    {0,  140 , "лпмеуп3", 2},
+                    {0,  170 , "лпмеуп4", 3},
+                    {0,  200 , "лпмеуп5", 4}}};
     btn[2] = {400,  0, "БАМПЕР ПЕР"};
     btn[3] = {600,  0, "КОЛЁСА"};
     btn[4] = {800,  0, "ШИПЫ"};
     btn[5] = {1000, 0, "ПППППППППП"};
 
-
     bool kolVisible = false;
-
+    bool kolVisible1 = false;
 
     HDC koleso1 = txLoadImage("pic/volkte37.bmp");
     bool drawKoleso1 = false;
@@ -114,8 +118,10 @@ int main()
     bool drawKoleso2 = false;
     HDC koleso3 = txLoadImage("pic/bbs.bmp");
     bool drawKoleso3 = false;
-
-
+    HDC koleso4 = txLoadImage("pic/to`rjktcj.bmp");
+    bool drawKoleso4 = false;
+    HDC koleso5 = txLoadImage("pic/rjktcj.bmp");
+    bool drawKoleso5 = false;
 
     while (!GetAsyncKeyState(VK_ESCAPE))
     {
@@ -126,21 +132,6 @@ int main()
         for (int i = 0; i < 6; i = i + 1)
             btn[i].draw();
 
-
-        //Нопки
-        //drawButton(0,   "WHEELS");
-        //drawButton(200, "ENGINE");
-        //drawButton(400, "HOOD"  );
-        //drawButton(600, "ROOF"  );
-
-
-
-        //Картинки
-        //Win32::TransparentBlt (txDC(),900,20,200,200,koleso1,0,0,634,634, TX_WHITE);
-        //Win32::TransparentBlt (txDC(),900,240,200,200,koleso2,0,0,430,429, TX_WHITE);
-        //Win32::TransparentBlt (txDC(),900,480,200,200,koleso3,0,0,900,900, TX_WHITE);
-        //Win32::TransparentBlt (txDC(),300,300,200,200,koleso1,0,0,634,634, TX_WHITE);
-
         //Клики
         if (btn[0].cliiiiick())
         {
@@ -148,45 +139,109 @@ int main()
             txSleep(200);
         }
 
-        //Всплывающая подсказка по наведению мышки
-        if (btn[0].variants[0].focus())
-        {
-            Win32::TransparentBlt (txDC(),200,100,200,200,koleso1,0,0,634,634, TX_WHITE);
-        }
-
-        //Клик на вариант (выбор колеса)
-        if (btn[0].variants[0].cliiiick())
-        {
-            drawKoleso1 = !drawKoleso1;
-            txSleep(200);
-        }
-
-        //Тут тоже может быть коммент
-        if (kolVisible)
-        {
-            for (int i = 0; i < btn[0].n_vars; i = i + 1)
-                btn[0].variants[i].draw();
-        }
-
-        if (drawKoleso1)
-        {
-            drawPicture(aPictures[0]);
-            //drawPicture(aPictures[1]);
-            //drawPicture(aPictures[2]);
-        }
-
         if (btn[1].cliiiiick())
         {
-            drawKoleso2 = !drawKoleso2;
+            kolVisible1 = !kolVisible1;
             txSleep(200);
         }
 
-        if (drawKoleso2 == true)
+        if (kolVisible == true)
         {
-            drawPicture(cPictures[0]);
-            drawPicture(cPictures[1]);
-            drawPicture(cPictures[2]);
+            //Всплывающая подсказка по наведению мышки
+            if (btn[0].variants[0].focus())
+            {
+                Win32::TransparentBlt (txDC(),200,100,200,200,koleso1,0,0,634,634, TX_WHITE);
+            }
+
+            if (btn[0].variants[1].focus())
+            {
+                Win32::TransparentBlt (txDC(),200,100,200,200,koleso2,0,0,430,429, TX_WHITE);
+            }
+
+            if (btn[0].variants[2].focus())
+            {
+                Win32::TransparentBlt (txDC(),200,100,200,200,koleso3,0,0,900,900, TX_WHITE);
+            }
+
+            if (btn[0].variants[3].focus())
+            {
+                Win32::TransparentBlt (txDC(),200,100,200,200,koleso4,0,0,200,200, TX_WHITE);
+            }
+
+            if (btn[0].variants[4].focus())
+            {
+                Win32::TransparentBlt (txDC(),200,100,200,200,koleso5,0,0,200,200, TX_WHITE);
+            }
+
+            //Клик на вариант (выбор колеса)
+            if (btn[0].variants[0].cliiiick())
+            {
+                drawKoleso1 = !drawKoleso1;
+                txSleep(200);
+            }
+
+            if (btn[0].variants[1].cliiiick())
+            {
+                drawKoleso2 = !drawKoleso2;
+                txSleep(200);
+            }
+
+            if (btn[0].variants[2].cliiiick())
+            {
+                drawKoleso3 = !drawKoleso3;
+                txSleep(200);
+            }
+
+            if (btn[0].variants[3].cliiiick())
+            {
+                drawKoleso4 = !drawKoleso4;
+                txSleep(200);
+            }
+
+            if (btn[0].variants[4].cliiiick())
+            {
+                drawKoleso5 = !drawKoleso5;
+                txSleep(200);
+            }
+
+            //Тут тоже может быть коммент
+            if (kolVisible)
+            {
+                for (int i = 0; i < btn[0].n_vars; i = i + 1)
+                    btn[0].variants[i].draw();
+            }
+            if (drawKoleso1)
+            {
+                drawPicture(aPictures[0]);
+            }
+
+            if (drawKoleso2)
+            {
+                drawPicture(aPictures[1]);
+            }
+
+            if (drawKoleso3)
+            {
+                drawPicture(aPictures[2]);
+            }
+
+            if (drawKoleso4)
+            {
+                drawPicture(aPictures[3]);
+            }
+
+            if (drawKoleso5)
+            {
+                drawPicture(aPictures[4]);
+            }
         }
+
+        if (kolVisible1 == true)
+        {
+
+        }
+
+
 
          txSleep (15);
          txEnd ();
