@@ -160,6 +160,23 @@ int main()
             drawKoleso1 = !drawKoleso1;
             txSleep(200);
         }
+        for (int i = 0; i< pic: i = i + 1)
+        if (txMouseButtons() == 1 &&
+            txMouseX() >= pic.x       &&  txMouseY() >= y     &&
+            txMouseX() <= x + 200 &&  txMouseY() <= y + 30)
+{
+    cPictures = i;
+}
+
+        if (GetAsyncKeyState(VK_LEFT) and cPictures >= 0)
+            pic[cPictures].x = pic[cPictures].x-2;
+            if(GetAsyncKeyState(VK_RIGHT) and cPictures >= 0)
+            pic[cPictures].x = pic[cPictures].x+2;
+            if(GetAsyncKeyState(VK_UP) and cPictures >= 0)
+            pic[cPictures].y = pic[cPictures].y-2;
+            if(GetAsyncKeyState(VK_DOWN) and cPictures >= 0)
+             pic[cPictures].y = pic[cPictures].y+2;
+
 
         //Тут тоже может быть коммент
         if (kolVisible)
@@ -181,7 +198,7 @@ int main()
             txSleep(200);
         }
 
-        if (drawKoleso2 == true)
+        //if (drawKoleso2 == true)
         {
             drawPicture(cPictures[0]);
             drawPicture(cPictures[1]);
