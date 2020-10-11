@@ -79,17 +79,17 @@ int main()
     txCreateWindow(1200,720);
 
     Picture aPictures[10];
-    aPictures[0] = {00, 230, 634, 634, txLoadImage("pic/volkte37.bmp")};
-    aPictures[1] = {00, 330, 430, 429, txLoadImage("pic/kakietodiski.bmp")};
-    aPictures[2] = {00, 430, 900, 900, txLoadImage("pic/bbs.bmp")};
-    aPictures[3] = {00, 530, 200, 200, txLoadImage("pic/to`rjktcj.bmp")};
+    aPictures[0] = {00, 230, 300, 300, txLoadImage("pic/volkte37.bmp")};
+    aPictures[1] = {00, 330, 430, 429, txLoadImage("pic/Wheels/Continental.bmp")};
+    aPictures[2] = {00, 430, 300, 300, txLoadImage("pic/bbs.bmp")};
+    aPictures[3] = {00, 530, 200, 200, txLoadImage("pic/Wheels/Hankook.bmp")};
     aPictures[4] = {00, 630, 200, 200, txLoadImage("pic/rjktcj.bmp")};
 
 
     Picture cPictures[10];
-    cPictures[0] = {200, 200, 634, 634, txLoadImage("pic/volkte37.bmp")};
-    cPictures[1] = {400, 400, 430, 429, txLoadImage("pic/kakietodiski.bmp")};
-    cPictures[2] = {600, 600, 900, 900, txLoadImage("pic/bbs.bmp")};
+    cPictures[0] = {200, 200, 300, 300, txLoadImage("pic/volkte37.bmp")};
+    cPictures[1] = {400, 400, 430, 429, txLoadImage("pic/Wheels/Continental.bmp")};
+    cPictures[2] = {600, 600, 300, 300, txLoadImage("pic/bbs.bmp")};
 
     Button btn[6];
     btn[0] = {0,    0, "колёса", 5,
@@ -114,11 +114,11 @@ int main()
 
     HDC koleso1 = txLoadImage("pic/volkte37.bmp");
     bool drawKoleso1 = false;
-    HDC koleso2 = txLoadImage("pic/kakietodiski.bmp");
+    HDC koleso2 = txLoadImage("pic/Wheels/Continental.bmp");
     bool drawKoleso2 = false;
     HDC koleso3 = txLoadImage("pic/bbs.bmp");
     bool drawKoleso3 = false;
-    HDC koleso4 = txLoadImage("pic/to`rjktcj.bmp");
+    HDC koleso4 = txLoadImage("pic/Wheels/Hankook.bmp");
     bool drawKoleso4 = false;
     HDC koleso5 = txLoadImage("pic/rjktcj.bmp");
     bool drawKoleso5 = false;
@@ -150,7 +150,7 @@ int main()
             //Всплывающая подсказка по наведению мышки
             if (btn[0].variants[0].focus())
             {
-                Win32::TransparentBlt (txDC(),200,100,200,200,koleso1,0,0,634,634, TX_WHITE);
+                Win32::TransparentBlt (txDC(),200,100,200,200,koleso1,0,0,300,300, TX_WHITE);
             }
 
             if (btn[0].variants[1].focus())
@@ -160,7 +160,7 @@ int main()
 
             if (btn[0].variants[2].focus())
             {
-                Win32::TransparentBlt (txDC(),200,100,200,200,koleso3,0,0,900,900, TX_WHITE);
+                Win32::TransparentBlt (txDC(),200,100,200,200,koleso3,0,0,300,300, TX_WHITE);
             }
 
             if (btn[0].variants[3].focus())
