@@ -84,8 +84,7 @@ int main()
     aPictures[1] = {00, 330, 430, 429, txLoadImage("pic/Wheels/Continental.bmp")};
     aPictures[2] = {00, 430, 300, 300, txLoadImage("pic/bbs.bmp")};
     aPictures[3] = {00, 530, 200, 200, txLoadImage("pic/Wheels/Hankook.bmp")};
-    aPictures[4] = {00, 630, 200, 200, txLoadImage("pic/rjktcj.bmp")};
-
+    aPictures[4] = {00, 630, 188, 188, txLoadImage("pic/Wheels/GoodYear.bmp")};
 
     int N_PICS = 3;
     Picture cPictures[N_PICS];
@@ -115,15 +114,15 @@ int main()
     bool kolVisible = false;
     bool kolVisible1 = false;
 
-    HDC koleso1 = txLoadImage("pic/volkte37.bmp");
-    bool drawKoleso1 = false;
+    //HDC koleso1 = txLoadImage("pic/volkte37.bmp");
+    //bool drawKoleso1 = false;
     HDC koleso2 = txLoadImage("pic/Wheels/Continental.bmp");
     bool drawKoleso2 = false;
     HDC koleso3 = txLoadImage("pic/bbs.bmp");
     bool drawKoleso3 = false;
     HDC koleso4 = txLoadImage("pic/Wheels/Hankook.bmp");
     bool drawKoleso4 = false;
-    HDC koleso5 = txLoadImage("pic/rjktcj.bmp");
+    HDC koleso5 = txLoadImage("pic/Wheels/GoodYear.bmp");
     bool drawKoleso5 = false;
 
     while (!GetAsyncKeyState(VK_ESCAPE))
@@ -151,41 +150,26 @@ int main()
         if (kolVisible == true)
         {
             //Всплывающая подсказка по наведению мышки
-            if (btn[0].variants[0].focus())
+            for (int i = 0; i < 5; i = i + 1)
             {
-                Win32::TransparentBlt (txDC(),200,100,200,200,koleso1,0,0,300,300, TX_WHITE);
+                if (btn[0].variants[i].focus())
+                {
+                    int n = btn[0].variants[i].n_pic;
+                    Win32::TransparentBlt (txDC(),200,100,200,200,aPictures[n].image,0,0,aPictures[n].width,aPictures[n].height, TX_WHITE);
+                }
             }
 
-            if (btn[0].variants[1].focus())
-            {
-                Win32::TransparentBlt (txDC(),200,100,200,200,koleso2,0,0,430,429, TX_WHITE);
-            }
-
-            if (btn[0].variants[2].focus())
-            {
-                Win32::TransparentBlt (txDC(),200,100,200,200,koleso3,0,0,300,300, TX_WHITE);
-            }
-
-            if (btn[0].variants[3].focus())
-            {
-                Win32::TransparentBlt (txDC(),200,100,200,200,koleso4,0,0,200,200, TX_WHITE);
-            }
-
-            if (btn[0].variants[4].focus())
-            {
-                Win32::TransparentBlt (txDC(),200,100,200,200,koleso5,0,0,200,200, TX_WHITE);
-            }
 
             //Клик на вариант (выбор колеса)
             if (btn[0].variants[0].cliiiick())
             {
-                drawKoleso1 = !drawKoleso1;
+                aPictures[0].visible = !aPictures[0].visible;
                 txSleep(200);
             }
 
             if (btn[0].variants[1].cliiiick())
             {
-                drawKoleso2 = !drawKoleso2;
+                aPictures[1].visible = !aPictures[1].visible;
                 txSleep(200);
             }
 
@@ -213,7 +197,8 @@ int main()
                 for (int i = 0; i < btn[0].n_vars; i = i + 1)
                     btn[0].variants[i].draw();
             }
-            if (drawKoleso1)
+
+            if (aPictures[0].visible)
             {
                 drawPicture(aPictures[0]);
             }
@@ -243,7 +228,6 @@ int main()
         {
 
         }
-
 
 
 
