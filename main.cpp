@@ -67,7 +67,6 @@ struct Picture
     int width;
     int height;
     HDC image;
-    string category;
     bool visible;
 };
 
@@ -80,48 +79,52 @@ int main()
 {
     txCreateWindow(1200,720);
 
-
     Picture aPictures[10];
-    aPictures[0] = {00, 200, 634, 634, txLoadImage("pic/volkte37.bmp")};
-    aPictures[1] = {00, 400, 430, 429, txLoadImage("pic/kakietodiski.bmp")};
-    aPictures[2] = {00, 600, 900, 900, txLoadImage("pic/bbs.bmp")};
+    aPictures[0] = {00, 230, 300, 300, txLoadImage("pic/volkte37.bmp")};
+    aPictures[1] = {00, 330, 430, 429, txLoadImage("pic/Wheels/Continental.bmp")};
+    aPictures[2] = {00, 430, 300, 300, txLoadImage("pic/bbs.bmp")};
+    aPictures[3] = {00, 530, 200, 200, txLoadImage("pic/Wheels/Hankook.bmp")};
+    aPictures[4] = {00, 630, 200, 200, txLoadImage("pic/rjktcj.bmp")};
 
-    //РљРѕР»РёС‡РµСЃС‚РІРѕ РєР°СЂС‚РёРЅРѕРє
+
     int N_PICS = 3;
     Picture cPictures[N_PICS];
-    cPictures[0] = {200, 200, 634, 634, txLoadImage("pic/volkte37.bmp"), "Wheel", false};
-    cPictures[1] = {400, 400, 430, 429, txLoadImage("pic/kakietodiski.bmp"), "Wheel", false};
-    cPictures[2] = {600, 600, 900, 900, txLoadImage("pic/bbs.bmp"), "Wheel", false};
-
+    cPictures[0] = {200, 200, 300, 300, txLoadImage("pic/volkte37.bmp")};
+    cPictures[1] = {400, 400, 430, 429, txLoadImage("pic/Wheels/Continental.bmp")};
+    cPictures[2] = {600, 600, 300, 300, txLoadImage("pic/bbs.bmp")};
     int nomer = -100;
 
-
     Button btn[6];
-    btn[0] = {0,    0, "РљР Р«РЁРђ", 3,
-                   {{0,  80  , "Р»РїРјРµСѓРї1", 0},
-                    {0,  110 , "Р»РїРјРµСѓРї2", 1},
-                    {0,  140 , "Р»РїРјРµСѓРї3", 2}}};
-    btn[1] = {200,  0, "Р‘РђРњРџР•Р  Р—РђР”", 3,
-                   {{0,  80  , "Р»РїРјРµСѓРї1", 0},
-                    {0,  110 , "Р»РїРјРµСѓРї2", 1},
-                    {0,  140 , "Р»РїРјРµСѓРї3", 2}}};
-    btn[2] = {400,  0, "Р‘РђРњРџР•Р  РџР•Р "};
-    btn[3] = {600,  0, "РљРћР›РЃРЎРђ"};
-    btn[4] = {800,  0, "РЁРРџР«"};
-    btn[5] = {1000, 0, "РџРџРџРџРџРџРџРџРџРџ"};
-
+    btn[0] = {0,    0, "колёса", 5,
+                   {{0,  80  , "колесо1", 0},
+                    {0,  110 , "колесо2", 1},
+                    {0,  140 , "колесо3", 2},
+                    {0,  170 , "колесо4", 3},
+                    {0,  200 , "колесо5", 4}}};
+    btn[1] = {200,  0, "БАМПЕР ЗАД", 3,
+                   {{0,  80  , "лпмеуп1", 0},
+                    {0,  110 , "лпмеуп2", 1},
+                    {0,  140 , "лпмеуп3", 2},
+                    {0,  170 , "лпмеуп4", 3},
+                    {0,  200 , "лпмеуп5", 4}}};
+    btn[2] = {400,  0, "БАМПЕР ПЕР"};
+    btn[3] = {600,  0, "КОЛЁСА"};
+    btn[4] = {800,  0, "ШИПЫ"};
+    btn[5] = {1000, 0, "ПППППППППП"};
 
     bool kolVisible = false;
-
+    bool kolVisible1 = false;
 
     HDC koleso1 = txLoadImage("pic/volkte37.bmp");
     bool drawKoleso1 = false;
-    HDC koleso2 = txLoadImage("pic/kakietodiski.bmp");
+    HDC koleso2 = txLoadImage("pic/Wheels/Continental.bmp");
     bool drawKoleso2 = false;
     HDC koleso3 = txLoadImage("pic/bbs.bmp");
     bool drawKoleso3 = false;
-
-
+    HDC koleso4 = txLoadImage("pic/Wheels/Hankook.bmp");
+    bool drawKoleso4 = false;
+    HDC koleso5 = txLoadImage("pic/rjktcj.bmp");
+    bool drawKoleso5 = false;
 
     while (!GetAsyncKeyState(VK_ESCAPE))
     {
@@ -132,41 +135,145 @@ int main()
         for (int i = 0; i < 6; i = i + 1)
             btn[i].draw();
 
-
-        //РќРѕРїРєРё
-        //drawButton(0,   "WHEELS");
-        //drawButton(200, "ENGINE");
-        //drawButton(400, "HOOD"  );
-        //drawButton(600, "ROOF"  );
-
-
-
-        //РљР°СЂС‚РёРЅРєРё
-        //Win32::TransparentBlt (txDC(),900,20,200,200,koleso1,0,0,634,634, TX_WHITE);
-        //Win32::TransparentBlt (txDC(),900,240,200,200,koleso2,0,0,430,429, TX_WHITE);
-        //Win32::TransparentBlt (txDC(),900,480,200,200,koleso3,0,0,900,900, TX_WHITE);
-        //Win32::TransparentBlt (txDC(),300,300,200,200,koleso1,0,0,634,634, TX_WHITE);
-
-        //РљР»РёРєРё
+        //Клики
         if (btn[0].cliiiiick())
         {
             kolVisible = !kolVisible;
             txSleep(200);
         }
 
-        //Р’СЃРїР»С‹РІР°СЋС‰Р°СЏ РїРѕРґСЃРєР°Р·РєР° РїРѕ РЅР°РІРµРґРµРЅРёСЋ РјС‹С€РєРё
-        if (btn[0].variants[0].focus())
+        if (btn[1].cliiiiick())
         {
-            Win32::TransparentBlt (txDC(),200,100,200,200,koleso1,0,0,634,634, TX_WHITE);
-        }
-
-        //РљР»РёРє РЅР° РІР°СЂРёР°РЅС‚ (РІС‹Р±РѕСЂ РєРѕР»РµСЃР°)
-        if (btn[0].variants[0].cliiiick())
-        {
-            drawKoleso1 = !drawKoleso1;
+            kolVisible1 = !kolVisible1;
             txSleep(200);
         }
-        //__Р”РІРёР¶РµРЅРёРµ РєР°СЂС‚РёРЅРєРё__
+
+        if (kolVisible == true)
+        {
+            //Всплывающая подсказка по наведению мышки
+            if (btn[0].variants[0].focus())
+            {
+                Win32::TransparentBlt (txDC(),200,100,200,200,koleso1,0,0,300,300, TX_WHITE);
+            }
+
+            if (btn[0].variants[1].focus())
+            {
+                Win32::TransparentBlt (txDC(),200,100,200,200,koleso2,0,0,430,429, TX_WHITE);
+            }
+
+            if (btn[0].variants[2].focus())
+            {
+                Win32::TransparentBlt (txDC(),200,100,200,200,koleso3,0,0,300,300, TX_WHITE);
+            }
+
+            if (btn[0].variants[3].focus())
+            {
+                Win32::TransparentBlt (txDC(),200,100,200,200,koleso4,0,0,200,200, TX_WHITE);
+            }
+
+            if (btn[0].variants[4].focus())
+            {
+                Win32::TransparentBlt (txDC(),200,100,200,200,koleso5,0,0,200,200, TX_WHITE);
+            }
+
+            //Клик на вариант (выбор колеса)
+            if (btn[0].variants[0].cliiiick())
+            {
+                drawKoleso1 = !drawKoleso1;
+                txSleep(200);
+            }
+
+            if (btn[0].variants[1].cliiiick())
+            {
+                drawKoleso2 = !drawKoleso2;
+                txSleep(200);
+            }
+
+            if (btn[0].variants[2].cliiiick())
+            {
+                drawKoleso3 = !drawKoleso3;
+                txSleep(200);
+            }
+
+            if (btn[0].variants[3].cliiiick())
+            {
+                drawKoleso4 = !drawKoleso4;
+                txSleep(200);
+            }
+
+            if (btn[0].variants[4].cliiiick())
+            {
+                drawKoleso5 = !drawKoleso5;
+                txSleep(200);
+            }
+
+            //Тут тоже может быть коммент
+            if (kolVisible)
+            {
+                for (int i = 0; i < btn[0].n_vars; i = i + 1)
+                    btn[0].variants[i].draw();
+            }
+            if (drawKoleso1)
+            {
+                drawPicture(aPictures[0]);
+            }
+
+            if (drawKoleso2)
+            {
+                drawPicture(aPictures[1]);
+            }
+
+            if (drawKoleso3)
+            {
+                drawPicture(aPictures[2]);
+            }
+
+            if (drawKoleso4)
+            {
+                drawPicture(aPictures[3]);
+            }
+
+            if (drawKoleso5)
+            {
+                drawPicture(aPictures[4]);
+            }
+        }
+
+        if (kolVisible1 == true)
+        {
+
+        }
+
+
+
+
+        if (btn[0].cliiiiick())
+        {
+            cPictures[0].visible = !cPictures[0].visible;
+            txSleep(200);
+        }
+        if (btn[1].cliiiiick())
+        {
+            cPictures[1].visible = !cPictures[1].visible;
+            txSleep(200);
+        }
+        if (btn[2].cliiiiick())
+        {
+            cPictures[2].visible = !cPictures[2].visible;
+            txSleep(200);
+        }
+
+
+
+            if (cPictures[0].visible)
+                drawPicture(cPictures[0]);
+            if (cPictures[1].visible)
+                drawPicture(cPictures[1]);
+            if (cPictures[2].visible)
+                drawPicture(cPictures[2]);
+
+
+        //__Движение картинки__
         for (int i = 0; i< N_PICS; i = i + 1)
         if (txMouseButtons() == 1 &&
             txMouseX() >= cPictures[i].x        &&  txMouseY() >= cPictures[i].y     &&
@@ -192,49 +299,7 @@ int main()
      //   {
      //   centerPicter[i].visible = false;
      //   }
-}
-
-
-
-        //РўСѓС‚ С‚РѕР¶Рµ РјРѕР¶РµС‚ Р±С‹С‚СЊ РєРѕРјРјРµРЅС‚
-        if (kolVisible)
-        {
-            for (int i = 0; i < btn[0].n_vars; i = i + 1)
-                btn[0].variants[i].draw();
-        }
-
-        if (drawKoleso1)
-        {
-            drawPicture(aPictures[0]);
-            //drawPicture(aPictures[1]);
-            //drawPicture(aPictures[2]);
-        }
-
-        if (btn[0].cliiiiick())
-        {
-            cPictures[0].visible = !cPictures[0].visible;
-            txSleep(200);
-        }
-        if (btn[1].cliiiiick())
-        {
-            cPictures[1].visible = !cPictures[1].visible;
-            txSleep(200);
-        }
-        if (btn[2].cliiiiick())
-        {
-            cPictures[2].visible = !cPictures[2].visible;
-            txSleep(200);
-        }
-
-        //if (drawKoleso2 == true)
-        {
-            if (cPictures[0].visible)
-                drawPicture(cPictures[0]);
-            if (cPictures[1].visible)
-                drawPicture(cPictures[1]);
-            if (cPictures[2].visible)
-                drawPicture(cPictures[2]);
-        }
+//}
 
          txSleep (15);
          txEnd ();
@@ -243,4 +308,3 @@ int main()
 
   return 0;
 }
-//РЇ СЃРґРµР»Р°Р» РЅРµРјРЅРѕРіРѕ в™‚Semenв™‚ РґР»СЏ СЃРІРѕРµРіРѕ в™‚Gay partyв™‚
