@@ -257,7 +257,7 @@ int main()
                 drawPicture(cPictures[2]);
 
 
-        //__Aae?aiea ea?oeiee__
+        //__Движение картинки__
         for (int i = 0; i< N_PICS; i = i + 1)
         if (txMouseButtons() == 1 &&
             txMouseX() >= cPictures[i].x        &&  txMouseY() >= cPictures[i].y     &&
@@ -284,8 +284,6 @@ int main()
      //   centerPicter[i].visible = false;
      //   }
 //}
-
-
 
          txSleep (15);
          txEnd ();
