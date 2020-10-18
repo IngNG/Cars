@@ -67,6 +67,7 @@ struct Picture
     int width;
     int height;
     HDC image;
+    bool visible;
 };
 
 void drawPicture(Picture pct)
@@ -86,10 +87,12 @@ int main()
     aPictures[4] = {00, 630, 200, 200, txLoadImage("pic/rjktcj.bmp")};
 
 
-    Picture cPictures[10];
+    int N_PICS = 3;
+    Picture cPictures[N_PICS];
     cPictures[0] = {200, 200, 300, 300, txLoadImage("pic/volkte37.bmp")};
     cPictures[1] = {400, 400, 430, 429, txLoadImage("pic/Wheels/Continental.bmp")};
     cPictures[2] = {600, 600, 300, 300, txLoadImage("pic/bbs.bmp")};
+    int nomer = -100;
 
     Button btn[6];
     btn[0] = {0,    0, "колёса", 5,
@@ -242,6 +245,61 @@ int main()
         }
 
 
+
+
+        if (btn[0].cliiiiick())
+        {
+            cPictures[0].visible = !cPictures[0].visible;
+            txSleep(200);
+        }
+        if (btn[1].cliiiiick())
+        {
+            cPictures[1].visible = !cPictures[1].visible;
+            txSleep(200);
+        }
+        if (btn[2].cliiiiick())
+        {
+            cPictures[2].visible = !cPictures[2].visible;
+            txSleep(200);
+        }
+
+
+
+            if (cPictures[0].visible)
+                drawPicture(cPictures[0]);
+            if (cPictures[1].visible)
+                drawPicture(cPictures[1]);
+            if (cPictures[2].visible)
+                drawPicture(cPictures[2]);
+
+
+        //__Движение картинки__
+        for (int i = 0; i< N_PICS; i = i + 1)
+        if (txMouseButtons() == 1 &&
+            txMouseX() >= cPictures[i].x        &&  txMouseY() >= cPictures[i].y     &&
+            txMouseX() <= cPictures[i].x + 200 &&  txMouseY() <= cPictures[i].y + 30)
+        {
+            nomer = i;
+        }
+
+        if (GetAsyncKeyState(VK_LEFT) and nomer >= 0)
+            cPictures[nomer].x = cPictures[nomer].x-2;
+            if(GetAsyncKeyState(VK_RIGHT) and nomer >= 0)
+            cPictures[nomer].x = cPictures[nomer].x+2;
+            if(GetAsyncKeyState(VK_UP) and nomer >= 0)
+            cPictures[nomer].y = cPictures[nomer].y-2;
+            if(GetAsyncKeyState(VK_DOWN) and nomer >= 0)
+             cPictures[nomer].y = cPictures[nomer].y+2;
+
+
+//for (int i = 0; i < //COUNT_PICTURES ; i++)
+      //  if (cPictures[i].category ==
+     //       centePictures [npict].
+     //       i != nPict)
+     //   {
+     //   centerPicter[i].visible = false;
+     //   }
+//}
 
          txSleep (15);
          txEnd ();
