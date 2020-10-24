@@ -111,8 +111,8 @@ int main()
     //Кузова
     aPictures[0] = {100, 400, "pic/Cars/Jeep Wrangler.bmp"};
     aPictures[1] = {100, 400, "pic/Cars/red car.bmp"};
-    aPictures[2] = {100, 400, "pic/Cars/Black car.bmp"};
-    aPictures[3] = {100, 400, "pic/Cars/limuzin.bmp"};
+    aPictures[2] = {100, 400, "pic/Cars/Audi R8.bmp"};
+    aPictures[3] = {100, 400, "pic/Cars/Lamborghini.bmp"};
     aPictures[4] = {100, 400, "pic/Cars/lg.bmp"};
 
     //Колеса
@@ -154,7 +154,6 @@ int main()
                     {1000,  140 , "Кузов3", 2},
                     {1000,  170 , "колесо4",3},
                     {1000,  200 , "колесо5",4}}};
-
 
     while (!GetAsyncKeyState(VK_ESCAPE))
     {
@@ -263,5 +262,5 @@ int main()
     }
 
 
-  return 0;
+    return 0;
 }
