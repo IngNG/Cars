@@ -1,4 +1,8 @@
 #include "TXLib.h"
+#include <stdlib.h>
+#include <iostream>
+#include <fstream> // подключаем библиотеку
+using namespace std;
 
 
 struct Button2
@@ -40,6 +44,7 @@ struct Button
     int x;
     int y;
     const char* text;
+    bool pressed;
     int n_vars;
     Button2 variants[10];
 
@@ -65,9 +70,10 @@ struct Picture
 {
     int x;
     int y;
+    const char* address;
+    HDC image;
     int width;
     int height;
-    HDC image;
     bool visible;
 };
 
@@ -76,55 +82,84 @@ void drawPicture(Picture pct)
     Win32::TransparentBlt(txDC(), pct.x, pct.y, 100, 100, pct.image, 0, 0, pct.width, pct.height, TX_WHITE);
 }
 
+int getWidth(const char* adress)
+{
+    char header[54];
+    ifstream bmp;
+    bmp.open(adress, ios::in | ios::binary);
+    bmp.read(header, 54);
+    int shirina = *(int *)&header[18];
+    return shirina;
+}
+
+int getHeight(const char* adress)
+{
+    char header[54];
+    ifstream bmp;
+    bmp.open(adress, ios::in | ios::binary);
+    bmp.read(header, 54);
+    int vysota = *(int *)&header[22];
+    return vysota;
+}
+
 int main()
 {
     txCreateWindow(1200,720);
 
-    int N_PICS = 7;
+    int N_PICS = 9;
     Picture aPictures[N_PICS];
-    aPictures[0] = {00, 230, 300, 300, txLoadImage("pic/volkte37.bmp")};
-    aPictures[1] = {00, 330, 430, 429, txLoadImage("pic/Wheels/Continental.bmp")};
-    aPictures[2] = {00, 430, 300, 300, txLoadImage("pic/bbs.bmp")};
-    aPictures[3] = {00, 530, 200, 200, txLoadImage("pic/Wheels/Hankook.bmp")};
-    aPictures[4] = {00, 630, 188, 188, txLoadImage("pic/Wheels/GoodYear.bmp")};
-    aPictures[5] = {00, 630, 709, 309, txLoadImage("pic/Cars/Jeep Wrangler.bmp")};
-    aPictures[6] = {00,720,800,252,txLoadImage("pic/Cars/red car.bmp")};
-    aPictures[7] = {00,720,600,240,txLoadImage("pic/Cars/Black car.bmp")};
+    aPictures[0] = {00, 230, "pic/volkte37.bmp"};
+    aPictures[1] = {00, 330, "pic/Wheels/Continental.bmp"};
+    aPictures[2] = {00, 430, "pic/bbs.bmp"};
+    aPictures[3] = {00, 530, "pic/Wheels/Hankook.bmp"};
+    aPictures[4] = {00, 630, "pic/Wheels/GoodYear.bmp"};
+    aPictures[5] = {00, 630, "pic/Cars/Jeep Wrangler.bmp"};
+    aPictures[6] = {00,720 , "pic/Cars/red car.bmp"};
+    aPictures[7] = {00,720 , "pic/Cars/Black car.bmp"};
+    aPictures[8] = {00,720 , "pic/Cars/limuzin.bmp"};
+    aPictures[9] = {00,720 , "pic/Cars/lg.bmp"};
     int nomer = -100;
+
+    for (int z = 0; z < N_PICS; z = z + 1)
+    {
+        aPictures[z].image = txLoadImage(aPictures[z].address);
+        aPictures[z].height = getHeight(aPictures[z].address);
+        aPictures[z].width = getWidth(aPictures[z].address);
+    }
+
+
 
     //int N_PICS = 3;
     //Picture cPictures[N_PICS];
     //cPictures[0] = {200, 200, 300, 300, txLoadImage("pic/volkte37.bmp")};
     //cPictures[1] = {400, 400, 430, 429, txLoadImage("pic/Wheels/Continental.bmp")};
-   // cPictures[2] = {600, 600, 300, 300, txLoadImage("pic/bbs.bmp")};
-   // int nomer = -100;
+    //cPictures[2] = {600, 600, 300, 300, txLoadImage("pic/bbs.bmp")};
+    //int nomer = -100;
 
-    Button btn[6];
-    btn[0] = {0,    0, "колёса", 5,
+    int N_BTN = 6;
+    Button btn[N_BTN];
+    btn[0] = {0,    0, "колёса", false, 5,
                    {{0,  80  , "колесо1", 0},
                     {0,  110 , "колесо2", 1},
                     {0,  140 , "колесо3", 2},
                     {0,  170 , "колесо4", 3},
                     {0,  200 , "колесо5", 4}}};
-    btn[1] = {200,  0, "БАМПЕР ЗАД", 3,
+    btn[1] = {200,  0, "БАМПЕР ЗАД", false, 3,
                    {{0,  80  , "лпмеуп1", 0},
                     {0,  110 , "лпмеуп2", 1},
                     {0,  140 , "лпмеуп3", 2},
                     {0,  170 , "лпмеуп4", 3},
                     {0,  200 , "лпмеуп5", 4}}};
-    btn[2] = {400,  0, "БАМПЕР ПЕР"};
-    btn[3] = {600,  0, "КОЛЁСА"};
-    btn[4] = {800,  0, "ШИПЫ"};
-    btn[5] = {1000, 0, "Кузов", 5,
+    btn[2] = {400,  0, "БАМПЕР ПЕР", false};
+    btn[3] = {600,  0, "КОЛЁСА", false};
+    btn[4] = {800,  0, "ШИПЫ", false};
+    btn[5] = {1000, 0, "Кузов", false, 5,
                    {{1000,  80  , "Кузов1", 5},
                     {1000,  110 , "Кузов2", 6},
                     {1000,  140 , "Кузов3", 7},
-                    {0,  170 , "колесо4", 3},
-                    {0,  200 , "колесо5", 4}}};
+                    {1000,  170 , "колесо4",8},
+                    {1000,  200 , "колесо5",9}}};
 
-    bool kolVisible = false;
-    bool kolVisible1 = false;
-    bool kolVisible5 = false;
 
     while (!GetAsyncKeyState(VK_ESCAPE))
     {
@@ -132,29 +167,21 @@ int main()
 
         txClear();
         txSetColour(TX_BLACK);
-        for (int i = 0; i < 6; i = i + 1)
+        for (int i = 0; i < N_BTN; i = i + 1)
             btn[i].draw();
 
         //Клики
-        if (btn[0].cliiiiick())
+        for (int i = 0; i < N_BTN; i = i + 1)
         {
-            kolVisible = !kolVisible;
-            txSleep(200);
+            if (btn[i].cliiiiick())
+            {
+                btn[i].pressed = !btn[i].pressed;
+                txSleep(200);
+            }
         }
 
-        if (btn[1].cliiiiick())
-        {
-            kolVisible1 = !kolVisible1;
-            txSleep(200);
-        }
-
-        if (btn[5].cliiiiick())
-        {
-            kolVisible5 = !kolVisible5;
-            txSleep(200);
-        }
-
-        if (kolVisible == true)
+        //Нажаты колеса
+        if (btn[0].pressed == true)
         {
             //Всплывающая подсказка по наведению мышки
             for (int i = 0; i < btn[0].n_vars; i = i + 1)
@@ -165,25 +192,22 @@ int main()
                     Win32::TransparentBlt (txDC(),200,100,200,200,aPictures[n].image,0,0,aPictures[n].width,aPictures[n].height, TX_WHITE);
                 }
             }
-
+            //Клик на вариант
             for (int i=0; i<5; i=i+1)
             {
                 if (btn[0].variants[i].cliiiick())
                 {
                     int n = btn[0].variants[i].n_pic;
-                     aPictures[n].visible = !aPictures[n].visible;
-                     txSleep(200);
+                    aPictures[n].visible = !aPictures[n].visible;
+                    txSleep(200);
                 }
             }
-
-
             //Тут тоже может быть коммент
             for (int i = 0; i < btn[0].n_vars; i = i + 1)
                 btn[0].variants[i].draw();
-
         }
-
-        if (kolVisible5 == true)
+        //Нажаты кузова
+        if (btn[5].pressed == true)
         {
             //Всплывающая подсказка по наведению мышки
             for (int i = 0; i < btn[5].n_vars; i = i + 1)
@@ -204,12 +228,9 @@ int main()
                      txSleep(200);
                 }
             }
-
-
             //Тут тоже может быть коммент
             for (int i = 0; i < btn[5].n_vars; i = i + 1)
                 btn[5].variants[i].draw();
-
         }
 
 
@@ -222,9 +243,6 @@ int main()
              drawPicture(aPictures[i]);
            }
         }
-
-
-
 
 
         //__Движение картинки__
@@ -243,8 +261,7 @@ int main()
             if(GetAsyncKeyState(VK_UP) and nomer >= 0)
             aPictures[nomer].y = aPictures[nomer].y-2;
             if(GetAsyncKeyState(VK_DOWN) and nomer >= 0)
-             aPictures[nomer].y = aPictures[nomer].y+2;
-
+            aPictures[nomer].y = aPictures[nomer].y+2;
 
          txSleep (15);
          txEnd ();
