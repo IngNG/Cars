@@ -73,7 +73,7 @@ struct Picture
 
 void drawPicture(Picture pct)
 {
-    Win32::TransparentBlt(txDC(), pct.x, pct.y, 100, 100, pct.image, 0, 0, pct.width, pct.height, TX_WHITE);
+    Win32::TransparentBlt(txDC(), pct.x, pct.y, pct.width, pct.height, pct.image, 0, 0, pct.width, pct.height, TX_WHITE);
 }
 
 int main()
@@ -82,14 +82,18 @@ int main()
 
     int N_PICS = 7;
     Picture aPictures[N_PICS];
-    aPictures[0] = {00, 230, 300, 300, txLoadImage("pic/volkte37.bmp")};
-    aPictures[1] = {00, 330, 430, 429, txLoadImage("pic/Wheels/Continental.bmp")};
-    aPictures[2] = {00, 430, 300, 300, txLoadImage("pic/bbs.bmp")};
-    aPictures[3] = {00, 530, 200, 200, txLoadImage("pic/Wheels/Hankook.bmp")};
-    aPictures[4] = {00, 630, 188, 188, txLoadImage("pic/Wheels/GoodYear.bmp")};
-    aPictures[5] = {00, 630, 709, 309, txLoadImage("pic/Cars/Jeep Wrangler.bmp")};
-    aPictures[6] = {00,720,800,252,txLoadImage("pic/Cars/red car.bmp")};
-    aPictures[7] = {00,720,600,240,txLoadImage("pic/Cars/Black car.bmp")};
+    //Колеса
+    aPictures[0] = {100, 400, 709, 309, txLoadImage("pic/Cars/Jeep Wrangler.bmp")};
+    aPictures[1] = {100,720,800,252,txLoadImage("pic/Cars/red car.bmp")};
+    aPictures[2] = {100,720,600,240,txLoadImage("pic/Cars/Black car.bmp")};
+
+    aPictures[3] = {150, 600, 100, 100, txLoadImage("pic/volkte37.bmp")};
+    aPictures[4] = {150, 600, 100, 100, txLoadImage("pic/Wheels/Continental.bmp")};
+    aPictures[5] = {150, 600, 100, 100, txLoadImage("pic/bbs.bmp")};
+    aPictures[6] = {150, 600, 100, 100, txLoadImage("pic/Wheels/Hankook.bmp")};
+    aPictures[7] = {150, 600, 188, 188, txLoadImage("pic/Wheels/GoodYear.bmp")};
+
+
     int nomer = -100;
 
     //int N_PICS = 3;
@@ -101,30 +105,32 @@ int main()
 
     Button btn[6];
     btn[0] = {0,    0, "колёса", 5,
-                   {{0,  80  , "колесо1", 0},
-                    {0,  110 , "колесо2", 1},
-                    {0,  140 , "колесо3", 2},
-                    {0,  170 , "колесо4", 3},
-                    {0,  200 , "колесо5", 4}}};
+                   {{0,  80  , "колесо1", 7},
+                    {0,  110 , "колесо2", 6},
+                    {0,  140 , "колесо3", 5},
+                    {0,  170 , "колесо4", 4},
+                    {0,  200 , "колесо5", 3}}};
     btn[1] = {200,  0, "БАМПЕР ЗАД", 3,
-                   {{0,  80  , "лпмеуп1", 0},
-                    {0,  110 , "лпмеуп2", 1},
-                    {0,  140 , "лпмеуп3", 2},
-                    {0,  170 , "лпмеуп4", 3},
-                    {0,  200 , "лпмеуп5", 4}}};
+                   {{0,  80  , "лпмеуп1", 7},
+                    {0,  110 , "лпмеуп2", 6},
+                    {0,  140 , "лпмеуп3", 5},
+                    {0,  170 , "лпмеуп4", 4},
+                    {0,  200 , "лпмеуп5", 3}}};
     btn[2] = {400,  0, "БАМПЕР ПЕР"};
     btn[3] = {600,  0, "КОЛЁСА"};
     btn[4] = {800,  0, "ШИПЫ"};
     btn[5] = {1000, 0, "Кузов", 5,
-                   {{1000,  80  , "Кузов1", 5},
-                    {1000,  110 , "Кузов2", 6},
-                    {1000,  140 , "Кузов3", 7},
+                   {{1000,  80  , "Кузов1", 2},
+                    {1000,  110 , "Кузов2", 1},
+                    {1000,  140 , "Кузов3", 0},
                     {0,  170 , "колесо4", 3},
                     {0,  200 , "колесо5", 4}}};
 
     bool kolVisible = false;
     bool kolVisible1 = false;
     bool kolVisible5 = false;
+    bool kolVisible6 = false;
+    bool kolVisible7 = false;
 
     while (!GetAsyncKeyState(VK_ESCAPE))
     {
@@ -154,6 +160,19 @@ int main()
             txSleep(200);
         }
 
+           if (btn[6].cliiiiick())
+                {
+            kolVisible6 = !kolVisible6;
+            txSleep(200);
+        }
+
+        if (btn[7].cliiiiick())
+                {
+            kolVisible7 = !kolVisible7;
+            txSleep(200);
+        }
+
+        //Колеса
         if (kolVisible == true)
         {
             //Всплывающая подсказка по наведению мышки
@@ -183,6 +202,7 @@ int main()
 
         }
 
+        //Кузов
         if (kolVisible5 == true)
         {
             //Всплывающая подсказка по наведению мышки
