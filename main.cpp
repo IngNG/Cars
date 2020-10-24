@@ -79,7 +79,7 @@ struct Picture
 
 void drawPicture(Picture pct)
 {
-    Win32::TransparentBlt(txDC(), pct.x, pct.y, 100, 100, pct.image, 0, 0, pct.width, pct.height, TX_WHITE);
+    Win32::TransparentBlt(txDC(), pct.x, pct.y, pct.width, pct.height, pct.image, 0, 0, pct.width, pct.height, TX_WHITE);
 }
 
 int getWidth(const char* adress)
@@ -106,20 +106,24 @@ int main()
 {
     txCreateWindow(1200,720);
 
-    int N_PICS = 9;
+    int N_PICS = 10;
     Picture aPictures[N_PICS];
-    aPictures[0] = {00, 230, "pic/volkte37.bmp"};
-    aPictures[1] = {00, 330, "pic/Wheels/Continental.bmp"};
-    aPictures[2] = {00, 430, "pic/bbs.bmp"};
-    aPictures[3] = {00, 530, "pic/Wheels/Hankook.bmp"};
-    aPictures[4] = {00, 630, "pic/Wheels/GoodYear.bmp"};
-    aPictures[5] = {00, 630, "pic/Cars/Jeep Wrangler.bmp"};
-    aPictures[6] = {00,720 , "pic/Cars/red car.bmp"};
-    aPictures[7] = {00,720 , "pic/Cars/Black car.bmp"};
-    aPictures[8] = {00,720 , "pic/Cars/limuzin.bmp"};
-    aPictures[9] = {00,720 , "pic/Cars/lg.bmp"};
+    //Кузова
+    aPictures[0] = {100, 400, "pic/Cars/Jeep Wrangler.bmp"};
+    aPictures[1] = {100, 400, "pic/Cars/red car.bmp"};
+    aPictures[2] = {100, 400, "pic/Cars/Audi R8.bmp"};
+    aPictures[3] = {100, 400, "pic/Cars/Lamborghini.bmp"};
+    aPictures[4] = {100, 400, "pic/Cars/lg.bmp"};
+
+    //Колеса
+    aPictures[5] = {150, 600, "pic/volkte37.bmp"};
+    aPictures[6] = {150, 600, "pic/Wheels/Continental.bmp"};
+    aPictures[7] = {150, 600, "pic/bbs.bmp"};
+    aPictures[8] = {150, 600, "pic/Wheels/Hankook.bmp"};
+    aPictures[9] = {150, 600, "pic/Wheels/GoodYear.bmp"};
     int nomer = -100;
 
+    //Расчет ширины, высоты, загрузка картинок
     for (int z = 0; z < N_PICS; z = z + 1)
     {
         aPictures[z].image = txLoadImage(aPictures[z].address);
@@ -127,23 +131,14 @@ int main()
         aPictures[z].width = getWidth(aPictures[z].address);
     }
 
-
-
-    //int N_PICS = 3;
-    //Picture cPictures[N_PICS];
-    //cPictures[0] = {200, 200, 300, 300, txLoadImage("pic/volkte37.bmp")};
-    //cPictures[1] = {400, 400, 430, 429, txLoadImage("pic/Wheels/Continental.bmp")};
-    //cPictures[2] = {600, 600, 300, 300, txLoadImage("pic/bbs.bmp")};
-    //int nomer = -100;
-
     int N_BTN = 6;
     Button btn[N_BTN];
     btn[0] = {0,    0, "колёса", false, 5,
-                   {{0,  80  , "колесо1", 0},
-                    {0,  110 , "колесо2", 1},
-                    {0,  140 , "колесо3", 2},
-                    {0,  170 , "колесо4", 3},
-                    {0,  200 , "колесо5", 4}}};
+                   {{0,  80  , "колесо1", 5},
+                    {0,  110 , "колесо2", 6},
+                    {0,  140 , "колесо3", 7},
+                    {0,  170 , "колесо4", 8},
+                    {0,  200 , "колесо5", 9}}};
     btn[1] = {200,  0, "БАМПЕР ЗАД", false, 3,
                    {{0,  80  , "лпмеуп1", 0},
                     {0,  110 , "лпмеуп2", 1},
@@ -154,12 +149,11 @@ int main()
     btn[3] = {600,  0, "КОЛЁСА", false};
     btn[4] = {800,  0, "ШИПЫ", false};
     btn[5] = {1000, 0, "Кузов", false, 5,
-                   {{1000,  80  , "Кузов1", 5},
-                    {1000,  110 , "Кузов2", 6},
-                    {1000,  140 , "Кузов3", 7},
-                    {1000,  170 , "колесо4",8},
-                    {1000,  200 , "колесо5",9}}};
-
+                   {{1000,  80  , "Кузов1", 0},
+                    {1000,  110 , "Кузов2", 1},
+                    {1000,  140 , "Кузов3", 2},
+                    {1000,  170 , "колесо4",3},
+                    {1000,  200 , "колесо5",4}}};
 
     while (!GetAsyncKeyState(VK_ESCAPE))
     {
@@ -245,10 +239,10 @@ int main()
         }
 
 
-        //__Движение картинки__
+        //__Движение картинки__ (учтите видимость)
         for (int i = 0; i< N_PICS; i = i + 1)
         if (txMouseButtons() == 1 &&
-            txMouseX() >= aPictures[i].x        &&  txMouseY() >= aPictures[i].y     &&
+            txMouseX() >= aPictures[i].x       &&  txMouseY() >= aPictures[i].y     &&
             txMouseX() <= aPictures[i].x + 200 &&  txMouseY() <= aPictures[i].y + 200)
         {
             nomer = i;
@@ -256,17 +250,17 @@ int main()
 
         if (GetAsyncKeyState(VK_LEFT) and nomer >= 0)
             aPictures[nomer].x = aPictures[nomer].x-2;
-            if(GetAsyncKeyState(VK_RIGHT) and nomer >= 0)
+        if(GetAsyncKeyState(VK_RIGHT) and nomer >= 0)
             aPictures[nomer].x = aPictures[nomer].x+2;
-            if(GetAsyncKeyState(VK_UP) and nomer >= 0)
+        if(GetAsyncKeyState(VK_UP) and nomer >= 0)
             aPictures[nomer].y = aPictures[nomer].y-2;
-            if(GetAsyncKeyState(VK_DOWN) and nomer >= 0)
+        if(GetAsyncKeyState(VK_DOWN) and nomer >= 0)
             aPictures[nomer].y = aPictures[nomer].y+2;
 
-         txSleep (15);
-         txEnd ();
+        txSleep (15);
+        txEnd ();
     }
 
 
-  return 0;
+    return 0;
 }
