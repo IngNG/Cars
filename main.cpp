@@ -134,26 +134,26 @@ int main()
     int N_BTN = 6;
     Button btn[N_BTN];
     btn[0] = {0,    0, "колёса", false, 5,
-                   {{0,  80  , "колесо1", 5},
-                    {0,  110 , "колесо2", 6},
-                    {0,  140 , "колесо3", 7},
-                    {0,  170 , "колесо4", 8},
-                    {0,  200 , "колесо5", 9}}};
+                   {{0, 80 , "колесо1", 5},
+                    {0, 110, "колесо2", 6},
+                    {0, 140, "колесо3", 7},
+                    {0, 170, "колесо4", 8},
+                    {0, 200, "колесо5", 9}}};
     btn[1] = {200,  0, "БАМПЕР ЗАД", false, 3,
-                   {{0,  80  , "лпмеуп1", 0},
-                    {0,  110 , "лпмеуп2", 1},
-                    {0,  140 , "лпмеуп3", 2},
-                    {0,  170 , "лпмеуп4", 3},
-                    {0,  200 , "лпмеуп5", 4}}};
+                   {{0, 80 , "лпмеуп1", 0},
+                    {0, 110, "лпмеуп2", 1},
+                    {0, 140, "лпмеуп3", 2},
+                    {0, 170, "лпмеуп4", 3},
+                    {0, 200, "лпмеуп5", 4}}};
     btn[2] = {400,  0, "БАМПЕР ПЕР", false};
     btn[3] = {600,  0, "КОЛЁСА", false};
     btn[4] = {800,  0, "ШИПЫ", false};
     btn[5] = {1000, 0, "Кузов", false, 5,
-                   {{1000,  80  , "Кузов1", 0},
-                    {1000,  110 , "Кузов2", 1},
-                    {1000,  140 , "Кузов3", 2},
-                    {1000,  170 , "колесо4",3},
-                    {1000,  200 , "колесо5",4}}};
+                   {{1000, 80 , "Кузов1", 0},
+                    {1000, 110, "Кузов2", 1},
+                    {1000, 140, "Кузов3", 2},
+                    {1000, 170, "Кузов4",3},
+                    {1000, 200, "колесо5",4}}};
 
     while (!GetAsyncKeyState(VK_ESCAPE))
     {
@@ -174,60 +174,33 @@ int main()
             }
         }
 
-        //Нажаты колеса
-        if (btn[0].pressed == true)
+        //Нажаты колеса  Всплывающая подсказка по наведению мышки  Клик на вариант  Нажаты кузова
+        for (int z = 0; z < N_BTN; z = z + 1)
         {
-            //Всплывающая подсказка по наведению мышки
+        if (btn[z].pressed == true)
+        {
             for (int i = 0; i < btn[0].n_vars; i = i + 1)
             {
-                if (btn[0].variants[i].focus())
+                if (btn[z].variants[i].focus())
                 {
-                    int n = btn[0].variants[i].n_pic;
+                    int n = btn[z].variants[i].n_pic;
                     Win32::TransparentBlt (txDC(),200,100,200,200,aPictures[n].image,0,0,aPictures[n].width,aPictures[n].height, TX_WHITE);
                 }
             }
-            //Клик на вариант
-            for (int i=0; i<5; i=i+1)
+            for (int i=0; i < btn[z].n_vars; i=i+1)
             {
-                if (btn[0].variants[i].cliiiick())
+                if (btn[z].variants[i].cliiiick())
                 {
-                    int n = btn[0].variants[i].n_pic;
+                    int n = btn[z].variants[i].n_pic;
                     aPictures[n].visible = !aPictures[n].visible;
                     txSleep(200);
                 }
             }
-            //Тут тоже может быть коммент
-            for (int i = 0; i < btn[0].n_vars; i = i + 1)
-                btn[0].variants[i].draw();
-        }
-        //Нажаты кузова
-        if (btn[5].pressed == true)
-        {
-            //Всплывающая подсказка по наведению мышки
-            for (int i = 0; i < btn[5].n_vars; i = i + 1)
-            {
-                if (btn[5].variants[i].focus())
-                {
-                    int n = btn[5].variants[i].n_pic;
-                    Win32::TransparentBlt (txDC(),200,100,200,200,aPictures[n].image,0,0,aPictures[n].width,aPictures[n].height, TX_WHITE);
-                }
-            }
-
-            for (int i=0; i<btn[5].n_vars; i=i+1)
-            {
-                if (btn[5].variants[i].cliiiick())
-                {
-                    int n = btn[5].variants[i].n_pic;
-                     aPictures[n].visible = !aPictures[n].visible;
-                     txSleep(200);
-                }
-            }
-            //Тут тоже может быть коммент
-            for (int i = 0; i < btn[5].n_vars; i = i + 1)
-                btn[5].variants[i].draw();
+            for (int i = 0; i < btn[z].n_vars; i = i + 1)
+                btn[z].variants[i].draw();
         }
 
-
+        }
 
         //Рисование частей машины
         for (int i = 0; i < N_PICS; i = i + 1)
@@ -242,8 +215,9 @@ int main()
         //__Движение картинки__ (учтите видимость)
         for (int i = 0; i< N_PICS; i = i + 1)
         if (txMouseButtons() == 1 &&
-            txMouseX() >= aPictures[i].x       &&  txMouseY() >= aPictures[i].y     &&
-            txMouseX() <= aPictures[i].x + 200 &&  txMouseY() <= aPictures[i].y + 200)
+            txMouseX() >= aPictures[i].x       &&  txMouseY() >= aPictures[i].y       &&
+            txMouseX() <= aPictures[i].x + 200 &&  txMouseY() <= aPictures[i].y + 200 &&
+            aPictures[i].visible)
         {
             nomer = i;
         }
@@ -256,6 +230,7 @@ int main()
             aPictures[nomer].y = aPictures[nomer].y-2;
         if(GetAsyncKeyState(VK_DOWN) and nomer >= 0)
             aPictures[nomer].y = aPictures[nomer].y+2;
+
 
         txSleep (15);
         txEnd ();
