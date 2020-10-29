@@ -4,13 +4,13 @@
 #include <fstream> // подключаем библиотеку
 using namespace std;
 
-
+//Можно и библиотеки создать под них
 struct Button2
 {
-    int x;
-    int y;
     const char* text;
     int n_pic;
+    int x;
+    int y;
 
     void draw()
     {
@@ -41,16 +41,12 @@ struct Button2
 
 struct Button
 {
-
     const char* text;
     int n_vars;
     Button2 variants[10];
     int x;
     int y;
     bool pressed;
-
-
-
 
     void draw()
     {
@@ -113,6 +109,8 @@ int main()
     int N_PICS = 10;
     Picture aPictures[N_PICS];
     //Кузова
+    //Как насчет некого стандарта размеров и положения деталей?
+    //Машины 800 шириной, колеса 100 шириной, бампер...
     aPictures[0] = {100, 400, "pic/Cars/Jeep Wrangler.bmp"};
     aPictures[1] = {100, 400, "pic/Cars/red car.bmp"};
     aPictures[2] = {100, 400, "pic/Cars/Audi R8.bmp"};
@@ -133,16 +131,20 @@ int main()
         aPictures[z].image = txLoadImage(aPictures[z].address);
         aPictures[z].height = getHeight(aPictures[z].address);
         aPictures[z].width = getWidth(aPictures[z].address);
+
+        //Можно и координаты здесь же считать (если категорию добавить)
     }
 
     int N_BTN = 6;
     Button btn[N_BTN];
     btn[0] = {  "колёса",  5,
                    {{ "колесо1", 5},
-                    { "колесо2", 6},
+                    { "Continental", 6},//И нет, я не просто так их переименовал
                     { "колесо3", 7},
-                    { "колесо4", 8},
-                    { "колесо5", 9}}};
+                    { "Hankook", 8},
+                    { "GoodYear", 9}}};
+
+    //Когда уже остальные кнопки активируете?
     btn[1] = { "БАМПЕР ЗАД",  3,
                    {{ "лпмеуп1", 0},
                     { "лпмеуп2", 1},
@@ -150,6 +152,7 @@ int main()
                     { "лпмеуп4", 3},
                     { "лпмеуп5", 4}}};
     btn[2] = { "БАМПЕР ПЕР", };
+    //https://github.com/IngCenter/PixelCars
     btn[3] = { "КОЛЁСА", };
     btn[4] = { "ШИПЫ", };
     btn[5] = { "Кузов",  5,
@@ -159,33 +162,34 @@ int main()
                     { "колесо4",3},
                     { "колесо5",4}}};
 
-
+    //Координаты кнопок
     for (int i = 0; i < N_BTN; i++)
     {
-            btn[i].pressed = false;
-            btn[i].x = 200 * i;
-            btn[i].y = 0;
-            for (int j = 0; j < btn[i].n_vars; j++)
-            {
-                btn[i].variants[j].x = btn[i].x;      //!
-                btn[i].variants[j].y = 80 + 30 * i;      //!
-            }
+        btn[i].pressed = false;
+        btn[i].x = 200 * i;
+        btn[i].y = 0;
+        for (int j = 0; j < btn[i].n_vars; j++)
+        {
+            btn[i].variants[j].x = btn[i].x;      //!
+            btn[i].variants[j].y = 80 + 30 * j;      //!
+        }
     }
 
-
-
+    //Сам редактор
     while (!GetAsyncKeyState(VK_ESCAPE))
     {
         txBegin ();
-
         txClear();
+
+        //Кнопки рисуются
         txSetColour(TX_BLACK);
         for (int i = 0; i < N_BTN; i = i + 1)
             btn[i].draw();
 
-        //Клики
+        //Клик на кнопки
         for (int i = 0; i < N_BTN; i = i + 1)
         {
+            //А как насчет деактивировать все остальные кнопки?
             if (btn[i].cliiiiick())
             {
                 btn[i].pressed = !btn[i].pressed;
@@ -194,75 +198,56 @@ int main()
         }
 
         //Нажаты колеса
-        if (btn[0].pressed == true)
+        for (int z = 0; z < N_BTN; z = z + 1)
         {
-            //Всплывающая подсказка по наведению мышки
-            for (int i = 0; i < btn[0].n_vars; i = i + 1)
+            if (btn[z].pressed)
             {
-                if (btn[0].variants[i].focus())
+                //Фокусировка на варианты
+                for (int i = 0; i < btn[0].n_vars; i = i + 1)
                 {
-                    int n = btn[0].variants[i].n_pic;
-                    Win32::TransparentBlt (txDC(),200,100,200,200,aPictures[n].image,0,0,aPictures[n].width,aPictures[n].height, TX_WHITE);
+                    if (btn[z].variants[i].focus())
+                    {
+                        int n = btn[z].variants[i].n_pic;
+                        Win32::TransparentBlt (txDC(),200,100,200,200,aPictures[n].image,0,0,aPictures[n].width,aPictures[n].height, TX_WHITE);
+                    }
                 }
-            }
-            //Клик на вариант
-            for (int i=0; i<5; i=i+1)
-            {
-                if (btn[0].variants[i].cliiiick())
+
+                //Клик на варианты
+                for (int i=0; i < btn[z].n_vars; i=i+1)
                 {
-                    int n = btn[0].variants[i].n_pic;
-                    aPictures[n].visible = !aPictures[n].visible;
-                    txSleep(200);
+                    if (btn[z].variants[i].cliiiick())
+                    {
+                        int n = btn[z].variants[i].n_pic;
+
+                        //А как насчет деактивировать все остальные кузова, если кузов выбран?
+                        aPictures[n].visible = !aPictures[n].visible;
+                        txSleep(200);
+                    }
                 }
+
+                //Рисование вариантов
+                for (int i = 0; i < btn[z].n_vars; i = i + 1)
+                    btn[z].variants[i].draw();
             }
-            //Тут тоже может быть коммент
-            for (int i = 0; i < btn[0].n_vars; i = i + 1)
-                btn[0].variants[i].draw();
+
         }
-        //Нажаты кузова
-        if (btn[5].pressed == true)
-        {
-            //Всплывающая подсказка по наведению мышки
-            for (int i = 0; i < btn[5].n_vars; i = i + 1)
-            {
-                if (btn[5].variants[i].focus())
-                {
-                    int n = btn[5].variants[i].n_pic;
-                    Win32::TransparentBlt (txDC(),200,100,200,200,aPictures[n].image,0,0,aPictures[n].width,aPictures[n].height, TX_WHITE);
-                }
-            }
-
-            for (int i=0; i<btn[5].n_vars; i=i+1)
-            {
-                if (btn[5].variants[i].cliiiick())
-                {
-                    int n = btn[5].variants[i].n_pic;
-                     aPictures[n].visible = !aPictures[n].visible;
-                     txSleep(200);
-                }
-            }
-            //Тут тоже может быть коммент
-            for (int i = 0; i < btn[5].n_vars; i = i + 1)
-                btn[5].variants[i].draw();
-        }
-
-
 
         //Рисование частей машины
         for (int i = 0; i < N_PICS; i = i + 1)
         {
-           if (aPictures[i].visible)
-           {
-             drawPicture(aPictures[i]);
-           }
+            if (aPictures[i].visible)
+            {
+                drawPicture(aPictures[i]);
+            }
         }
 
 
-        //__Движение картинки__ (учтите видимость)
+        //__Движение картинки__
         for (int i = 0; i< N_PICS; i = i + 1)
         if (txMouseButtons() == 1 &&
-            txMouseX() >= aPictures[i].x       &&  txMouseY() >= aPictures[i].y     &&
-            txMouseX() <= aPictures[i].x + 200 &&  txMouseY() <= aPictures[i].y + 200)
+            txMouseX() >= aPictures[i].x       &&  txMouseY() >= aPictures[i].y       &&
+            txMouseX() <= aPictures[i].x + 200 &&  txMouseY() <= aPictures[i].y + 200 &&
+            aPictures[i].visible)
         {
             nomer = i;
         }
@@ -276,10 +261,11 @@ int main()
         if(GetAsyncKeyState(VK_DOWN) and nomer >= 0)
             aPictures[nomer].y = aPictures[nomer].y+2;
 
+
         txSleep (15);
         txEnd ();
     }
 
-
+    //Картинки можно и удалить
     return 0;
 }
