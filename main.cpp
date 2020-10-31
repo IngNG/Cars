@@ -106,7 +106,7 @@ int main()
 {
     txCreateWindow(1200,720);
 
-    int N_PICS = 99;
+    int N_PICS = 10;
     Picture aPictures[N_PICS];
     //Кузова
     //Как насчет некого стандарта размеров и положения деталей?
@@ -221,6 +221,7 @@ int main()
                     if (btn[z].variants[i].focus())
                     {
                         int n = btn[z].variants[i].n_pic;
+                        //А если учитывать пропорции?
                         Win32::TransparentBlt (txDC(),200,100,200,200,aPictures[n].image,0,0,aPictures[n].width,aPictures[n].height, TX_WHITE);
                     }
                 }
@@ -257,6 +258,7 @@ int main()
         //__Движение картинки__
         for (int i = 0; i< N_PICS; i = i + 1)
         if (txMouseButtons() == 1 &&
+        //У них вот прям такая ширина? 200?
             txMouseX() >= aPictures[i].x       &&  txMouseY() >= aPictures[i].y       &&
             txMouseX() <= aPictures[i].x + 200 &&  txMouseY() <= aPictures[i].y + 200 &&
             aPictures[i].visible)
