@@ -106,23 +106,23 @@ int main()
 {
     txCreateWindow(1200,720);
 
-    int N_PICS = 10;
+    int N_PICS = 99;
     Picture aPictures[N_PICS];
     //Кузова
     //Как насчет некого стандарта размеров и положения деталей?
     //Машины 800 шириной, колеса 100 шириной, бампер...
     aPictures[0] = {100, 400, "pic/Cars/Jeep Wrangler.bmp"};
-    aPictures[1] = {100, 400, "pic/Cars/red car.bmp"};
-    aPictures[2] = {100, 400, "pic/Cars/Audi R8.bmp"};
-    aPictures[3] = {100, 400, "pic/Cars/Lamborghini.bmp"};
-    aPictures[4] = {100, 400, "pic/Cars/lg.bmp"};
+    aPictures[1] = {100, 400, "pic/Cars/red car.bmp"      };
+    aPictures[2] = {100, 400, "pic/Cars/Audi R8.bmp"      };
+    aPictures[3] = {100, 400, "pic/Cars/Lamborghini.bmp"  };
+    aPictures[4] = {100, 400, "pic/Cars/lg.bmp"           };
 
     //Колеса
-    aPictures[5] = {150, 600, "pic/volkte37.bmp"};
+    aPictures[5] = {150, 600, "pic/Wheels/volkte37.bmp"   };
     aPictures[6] = {150, 600, "pic/Wheels/Continental.bmp"};
-    aPictures[7] = {150, 600, "pic/bbs.bmp"};
-    aPictures[8] = {150, 600, "pic/Wheels/Hankook.bmp"};
-    aPictures[9] = {150, 600, "pic/Wheels/GoodYear.bmp"};
+    aPictures[7] = {150, 600, "pic/Wheels/bbs.bmp"        };
+    aPictures[8] = {150, 600, "pic/Wheels/Hankook.bmp"    };
+    aPictures[9] = {150, 600, "pic/Wheels/GoodYear.bmp"   };
     int nomer = -100;
 
     //Расчет ширины, высоты, загрузка картинок
@@ -134,33 +134,46 @@ int main()
 
         //Можно и координаты здесь же считать (если категорию добавить)
     }
-
+//https://github.com/IngCenter/PixelCars
     int N_BTN = 6;
     Button btn[N_BTN];
     btn[0] = {  "колёса",  5,
-                   {{ "колесо1", 5},
+                   {{ "колесо1" , 5},
                     { "Continental", 6},//И нет, я не просто так их переименовал
-                    { "колесо3", 7},
-                    { "Hankook", 8},
+                    { "колесо3" , 7},
+                    { "Hankook" , 8},
                     { "GoodYear", 9}}};
-
     //Когда уже остальные кнопки активируете?
-    btn[1] = { "БАМПЕР ЗАД",  3,
+    btn[1] = { "БАМПЕР ЗАД",  5,
                    {{ "лпмеуп1", 0},
                     { "лпмеуп2", 1},
                     { "лпмеуп3", 2},
                     { "лпмеуп4", 3},
                     { "лпмеуп5", 4}}};
-    btn[2] = { "БАМПЕР ПЕР", };
-    //https://github.com/IngCenter/PixelCars
-    btn[3] = { "КОЛЁСА", };
-    btn[4] = { "ШИПЫ", };
-    btn[5] = { "Кузов",  5,
-                   {{ "Кузов1", 0},          //!80 110 140 170
-                    { "Кузов2", 1},
-                    { "Кузов3", 2},
-                    { "колесо4",3},
-                    { "колесо5",4}}};
+    btn[2] = { "БАМПЕР ПЕР",  5,
+                   {{ "лпмеуп1", 0},
+                    { "лпмеуп2", 1},
+                    { "лпмеуп3", 2},
+                    { "лпмеуп4", 3},
+                    { "лпмеуп5", 4}}};
+    btn[3] = { "КОЛЁСА",      5,
+                   {{ "лпмеуп1", 0},
+                    { "лпмеуп2", 1},
+                    { "лпмеуп3", 2},
+                    { "лпмеуп4", 3},
+                    { "лпмеуп5", 4}}};
+    btn[4] = { "ШИПЫ",        5,
+                   {{ "шипы1"  , 0},
+                    { "шипы2"  , 1},
+                    { "шипы3"  , 2},
+                    { "шипы4"  , 3},
+                    { "шипы5"  , 4}}};
+    btn[5] = { "Кузов",       5,
+                   {{ "Кузов1" , 0},          //!80 110 140 170
+                    { "Кузов2" , 1},
+                    { "Кузов3" , 2},
+                    { "кузов4" , 3},
+                    { "кузов5" , 4}}};
 
     //Координаты кнопок
     for (int i = 0; i < N_BTN; i++)
@@ -223,13 +236,13 @@ int main()
                         aPictures[n].visible = !aPictures[n].visible;
                         txSleep(200);
                     }
+
                 }
 
                 //Рисование вариантов
                 for (int i = 0; i < btn[z].n_vars; i = i + 1)
                     btn[z].variants[i].draw();
             }
-
         }
 
         //Рисование частей машины
@@ -240,7 +253,6 @@ int main()
                 drawPicture(aPictures[i]);
             }
         }
-
 
         //__Движение картинки__
         for (int i = 0; i< N_PICS; i = i + 1)
@@ -261,11 +273,9 @@ int main()
         if(GetAsyncKeyState(VK_DOWN) and nomer >= 0)
             aPictures[nomer].y = aPictures[nomer].y+2;
 
-
         txSleep (15);
         txEnd ();
     }
-
     //Картинки можно и удалить
     return 0;
 }
