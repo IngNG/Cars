@@ -75,8 +75,8 @@ struct Picture
     int width;
     int height;
     bool visible;
-    const char* btn;
-    const char* btn2;
+    string btn;
+    string btn2;
 };
 
 void drawPicture(Picture pct)
@@ -134,11 +134,9 @@ int main()
         int pos1 = address.find("/",1);
         int pos2 = address.find("/",pos1 + 1);
         int pos3 = address.find(".",pos2 + 1);
-        cout << address.substr(0,pos1) <<endl;
-        cout << address.substr(pos1 + 1, pos2-pos1-1)<<endl;
-        cout << address.substr(pos2 + 1, pos3-pos2-1)<<endl;
-        //aPictures[z].btn=...
-        txSleep(100);
+
+        aPictures[z].btn = address.substr(pos1 + 1, pos2-pos1-1);
+        aPictures[z].btn2 = address.substr(pos2 + 1, pos3-pos2-1);
 
         aPictures[z].image = txLoadImage(aPictures[z].address);
         aPictures[z].height = getHeight(aPictures[z].address);
@@ -149,12 +147,7 @@ int main()
 //https://github.com/IngCenter/PixelCars
     int N_BTN = 6;
     Button btn[N_BTN];
-    btn[0] = {  "колёса",  5,
-                   {{ "колесо1" , 5},
-                    { "Continental", 6},//И нет, я не просто так их переименовал
-                    { "колесо3" , 7},
-                    { "Hankook" , 8},
-                    { "GoodYear", 9}}};
+    btn[0] = {  "Wheels",  0 };
     //Когда уже остальные кнопки активируете?
     btn[1] = { "БАМПЕР ЗАД",  5,
                    {{ "лпмеуп1", 0},
@@ -180,12 +173,29 @@ int main()
                     { "шипы3"  , 2},
                     { "шипы4"  , 3},
                     { "шипы5"  , 4}}};
-    btn[5] = { "Кузов",       5,
-                   {{ "Кузов1" , 0},          //!80 110 140 170
-                    { "Кузов2" , 1},
-                    { "Кузов3" , 2},
-                    { "кузов4" , 3},
-                    { "кузов5" , 4}}};
+    btn[5] = { "Cars",       0};
+
+    for (int z = 0; z < N_PICS; z = z + 1)
+    {
+        if (strcmp(aPictures[z].btn.c_str(), "Cars") == 0)
+        {
+            int nomer = btn[5].n_vars;
+            btn[5].variants[nomer]={aPictures[z].btn2.c_str(), z};
+            btn[5].n_vars = btn[5].n_vars + 1;
+        }
+
+        if (strcmp(aPictures[z].btn.c_str(), "Wheels") == 0)
+        {
+            int nomer = btn[0].n_vars;
+            btn[0].variants[nomer]={aPictures[z].btn2.c_str(), z};
+            btn[0].n_vars = btn[0].n_vars + 1;
+        }
+    }
+
+    //btn[5].n_vars = btn[5].n_vars - 1;
+
+
+        cout << btn[5].n_vars <<endl;
 
     //Координаты кнопок
     for (int i = 0; i < N_BTN; i++)
