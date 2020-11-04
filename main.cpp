@@ -75,6 +75,8 @@ struct Picture
     int width;
     int height;
     bool visible;
+    const char* btn;
+    const char* btn2;
 };
 
 void drawPicture(Picture pct)
@@ -128,6 +130,16 @@ int main()
     //–асчет ширины, высоты, загрузка картинок
     for (int z = 0; z < N_PICS; z = z + 1)
     {
+        string address = aPictures[z].address;//"pic/wheels/continetal.bmp";
+        int pos1 = address.find("/",1);
+        int pos2 = address.find("/",pos1 + 1);
+        int pos3 = address.find(".",pos2 + 1);
+        cout << address.substr(0,pos1) <<endl;
+        cout << address.substr(pos1 + 1, pos2-pos1-1)<<endl;
+        cout << address.substr(pos2 + 1, pos3-pos2-1)<<endl;
+        //aPictures[z].btn=...
+        txSleep(100);
+
         aPictures[z].image = txLoadImage(aPictures[z].address);
         aPictures[z].height = getHeight(aPictures[z].address);
         aPictures[z].width = getWidth(aPictures[z].address);
