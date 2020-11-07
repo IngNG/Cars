@@ -249,6 +249,7 @@ int main()
                     }
                 }
 
+
                 //Клик на варианты
                 for (int i=0; i < btn[z].n_vars; i=i+1)
                 {
@@ -256,7 +257,12 @@ int main()
                     {
                         int n = btn[z].variants[i].n_pic;
 
-                        //А как насчет деактивировать все остальные кузова, если кузов выбран?
+
+                        //Все хед1 с такой же категорией скрыть
+                        for (int k = 0; k < N_PICS; k++)
+                            if (aPictures[n].btn == aPictures[k].btn && n != k)
+                                aPictures[k].visible = false;
+
                         aPictures[n].visible = !aPictures[n].visible;
                         txSleep(200);
                     }
