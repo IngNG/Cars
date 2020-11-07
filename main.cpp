@@ -108,23 +108,27 @@ int main()
 {
     txCreateWindow(1200,720);
 
-    int N_PICS = 10;
+    int N_PICS = 14;
     Picture aPictures[N_PICS];
     //Кузова
     //Как насчет некого стандарта размеров и положения деталей?
     //Машины 800 шириной, колеса 100 шириной, бампер...
-    aPictures[0] = {100, 400, "pic/Cars/Jeep Wrangler.bmp"};
-    aPictures[1] = {100, 400, "pic/Cars/red car.bmp"      };
-    aPictures[2] = {100, 400, "pic/Cars/Audi R8.bmp"      };
-    aPictures[3] = {100, 400, "pic/Cars/Lamborghini.bmp"  };
-    aPictures[4] = {100, 400, "pic/Cars/lg.bmp"           };
+    aPictures[0] = {100, 400, "pic/Cars/Audi R8.bmp"};
+    aPictures[1] = {100, 400, "pic/Cars/Chery Tiggo.bmp"};
+    aPictures[2] = {100, 400, "pic/Cars/Dodge Ram.bmp"};
+    aPictures[3] = {100, 400, "pic/Cars/Formula E.bmp"};
+    aPictures[4] = {100, 400, "pic/Cars/Jeep Wrangler.bmp"};
+    aPictures[5] = {100, 400, "pic/Cars/Lamborghini Aventador.bmp"};
+    aPictures[6] = {100, 400, "pic/Cars/Mercedes G-klasse.bmp"};
+    aPictures[7] = {100, 400, "pic/Cars/Mercedes GLS.bmp"};
+    aPictures[8] = {100, 400, "pic/Cars/Volkswagen Beetle.bmp"};
 
     //Колеса
-    aPictures[5] = {150, 600, "pic/Wheels/volkte37.bmp"   };
-    aPictures[6] = {150, 600, "pic/Wheels/Continental.bmp"};
-    aPictures[7] = {150, 600, "pic/Wheels/bbs.bmp"        };
-    aPictures[8] = {150, 600, "pic/Wheels/Hankook.bmp"    };
-    aPictures[9] = {150, 600, "pic/Wheels/GoodYear.bmp"   };
+    aPictures[9] = {150, 600, "pic/Wheels/volkte37.bmp"   };
+    aPictures[10] = {150, 600, "pic/Wheels/Continental.bmp"};
+    aPictures[11] = {150, 600, "pic/Wheels/bbs.bmp"        };
+    aPictures[12] = {150, 600, "pic/Wheels/Hankook.bmp"    };
+    aPictures[13] = {150, 600, "pic/Wheels/GoodYear.bmp"   };
     int nomer = -100;
 
     //Расчет ширины, высоты, загрузка картинок
