@@ -135,7 +135,9 @@ int main()
         int pos2 = address.find("/",pos1 + 1);
         int pos3 = address.find(".",pos2 + 1);
 
+        //Категория
         aPictures[z].btn = address.substr(pos1 + 1, pos2-pos1-1);
+        //Модель
         aPictures[z].btn2 = address.substr(pos2 + 1, pos3-pos2-1);
 
         aPictures[z].image = txLoadImage(aPictures[z].address);
@@ -175,8 +177,10 @@ int main()
                     { "шипы5"  , 4}}};
     btn[5] = { "Cars",       0};
 
+    //Формируем кнопки к разделам
     for (int z = 0; z < N_PICS; z = z + 1)
     {
+        //Добавляем кнопки кузовов
         if (strcmp(aPictures[z].btn.c_str(), "Cars") == 0)
         {
             int nomer = btn[5].n_vars;
@@ -184,6 +188,7 @@ int main()
             btn[5].n_vars = btn[5].n_vars + 1;
         }
 
+        //Добавляем кнопки колес
         if (strcmp(aPictures[z].btn.c_str(), "Wheels") == 0)
         {
             int nomer = btn[0].n_vars;
@@ -192,12 +197,8 @@ int main()
         }
     }
 
-    //btn[5].n_vars = btn[5].n_vars - 1;
 
-
-        cout << btn[5].n_vars <<endl;
-
-    //Координаты кнопок
+    //Координаты кнопок (вскоре можно будет объединить с циклом выше)
     for (int i = 0; i < N_BTN; i++)
     {
         btn[i].pressed = false;
@@ -259,7 +260,6 @@ int main()
                         aPictures[n].visible = !aPictures[n].visible;
                         txSleep(200);
                     }
-
                 }
 
                 //Рисование вариантов
