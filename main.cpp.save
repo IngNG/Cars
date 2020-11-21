@@ -352,13 +352,13 @@ int main()
         }
 
         if (GetAsyncKeyState(VK_LEFT) and nomer >= 0)
-            aPictures[nomer].x = aPictures[nomer].x-10;
+            aPictures[nomer].x = aPictures[nomer].x-2;
         if(GetAsyncKeyState(VK_RIGHT) and nomer >= 0)
-            aPictures[nomer].x = aPictures[nomer].x+10;
+            aPictures[nomer].x = aPictures[nomer].x+2;
         if(GetAsyncKeyState(VK_UP) and nomer >= 0)
-            aPictures[nomer].y = aPictures[nomer].y-10;
+            aPictures[nomer].y = aPictures[nomer].y-2;
         if(GetAsyncKeyState(VK_DOWN) and nomer >= 0)
-            aPictures[nomer].y = aPictures[nomer].y+10;
+            aPictures[nomer].y = aPictures[nomer].y+2;
 
         txSleep (15);
         txEnd ();
