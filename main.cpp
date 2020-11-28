@@ -1,4 +1,5 @@
 #include "TXLib.h"
+#include "Button.cpp"
 #include <stdlib.h>
 #include <dirent.h>
 #include <iostream>
@@ -6,66 +7,6 @@
 using namespace std;
 
 //Можно и библиотеки создать под них
-struct Button2
-{
-    const char* text;
-    int n_pic;
-    int x;
-    int y;
-
-    void draw()
-    {
-        txSelectFont("Comic Sans MS", 20);
-        txRectangle(x, y, x + 200, y + 30);
-        txDrawText (x, y, x + 200, y + 30, text);
-    }
-
-    bool cliiiick()
-    {
-            if (txMouseButtons() == 1 &&
-                txMouseX() >= x       &&  txMouseY() >= y     &&
-                txMouseX() <= x + 200 &&  txMouseY() <= y + 30)
-                return true;
-            else
-                return false;
-    }
-
-    bool focus()
-    {
-            if (txMouseX() >= x       &&  txMouseY() >= y   &&
-                txMouseX() <= x + 200 &&  txMouseY() <= y + 30)
-                return true;
-            else
-                return false;
-    }
-};
-
-struct Button
-{
-    const char* text;
-    int n_vars;
-    Button2 variants[10];
-    int x;
-    int y;
-    bool pressed;
-
-    void draw()
-    {
-        txSelectFont("Comic Sans MS", 30);
-        txRectangle(x, y, x + 200, y + 80);
-        txDrawText (x, y, x + 200, y + 80, text);
-    }
-
-    bool cliiiiick()
-    {
-            if (txMouseButtons() == 1 &&
-                txMouseX() >= x       &&  txMouseY() >= 0   &&
-                txMouseX() <= x + 200 &&  txMouseY() <= 80)
-                return true;
-            else
-                return false;
-    }
-};
 
 struct Picture
 {
@@ -223,6 +164,7 @@ int main()
                     { "шипы4"  , 3},
                     { "шипы5"  , 4}}};
     btn[5] = { "Cars",       0};
+    btn[6] = { "А куда",     0};
 
     //Формируем кнопки к разделам
     for (int z = 0; z < N_PICS; z = z + 1)
@@ -271,10 +213,47 @@ int main()
             btn[i].variants[j].y = 80 + 30 * j;      //!
         }
     }
+    string PAGE = "Редактор";
+    bool Help = false;
+
 
     //Сам редактор
     while (!GetAsyncKeyState(VK_ESCAPE))
     {
+        if (!Help)
+        {
+            txBegin();
+            if (PAGE == "Справка")
+            {
+                txSetFillColor(TX_WHITE);
+                txSetColor(TX_BLACK);
+                txClear();
+                txDrawText(1000, 600, 1200, 700, "Начать!");
+                txDrawText(100, 100, 1200, 500,
+                      "Привет, Страдалец. \n"
+
+                );
+
+                if (txMouseButtons() == 1 &&
+                    txMouseX() >= 500 && txMouseY() >= 600 &&
+                    txMouseX() <= 500 && txMouseY() <= 600)
+                {
+                    PAGE = "Редактор";
+                    txSleep(500);
+
+            txSetFillColour(TX_GRAY);
+            txSetColour(TX_BLACK);
+            txRectangle(0,0,1532,150);      }
+        }
+   }
+
+    if (PAGE == "Редактор")
+    {
+     if (Click(btn[6].x, btn[6].y))
+     {   PAGE = "Справка";
+        txSleep(500);}
+
+    }
         txBegin ();
         txClear();
 
