@@ -1,6 +1,5 @@
 #include "TXLib.h"
 #include <stdlib.h>
-#include <dirent.h>
 #include <iostream>
 #include <fstream> // подключаем библиотеку
 using namespace std;
@@ -71,10 +70,12 @@ struct Picture
 {
     int x;
     int y;
-    string address;
+    const char* address;
     HDC image;
     int width;
     int height;
+    int widthPic;
+    int heightPic;
     bool visible;
     string btn;
     string btn2;
@@ -82,7 +83,7 @@ struct Picture
 
 void drawPicture(Picture pct)
 {
-    Win32::TransparentBlt(txDC(), pct.x, pct.y, pct.width, pct.height, pct.image, 0, 0, pct.width, pct.height, TX_WHITE);
+    Win32::TransparentBlt(txDC(), pct.x, pct.y, pct.widthPic, pct.heightPic, pct.image, 0, 0, pct.width, pct.height, TX_WHITE);
 }
 
 int getWidth(const char* adress)
@@ -105,42 +106,16 @@ int getHeight(const char* adress)
     return vysota;
 }
 
-int readFiles(const char* address, Picture* aPictures, int N)
-{
-    DIR *dir;
-    struct dirent *ent;
-    if ((dir = opendir (address)) != NULL) {
-     /* print all the files and directories within directory */
-        while ((ent = readdir (dir)) != NULL) {
-            string s = ent->d_name;
-            s = address + s;
-            if(s.find (".bmp") != -1 )
-            {
-                 //cout << s << endl;
-                aPictures[N] = {100, 100, s};
-                N = N + 1;
-            }
-         }
-        closedir (dir);
-     }
-
-     return N;
-}
-
 int main()
 {
     txCreateWindow(1200,720);
 
-    int N_PICS = 0;
-    Picture aPictures[1123];
-    N_PICS = readFiles("pic/Cars/", aPictures, N_PICS);
-    N_PICS = readFiles("pic/Wheels/", aPictures, N_PICS);
-    N_PICS = readFiles("pic/Wheels2/", aPictures, N_PICS);
-    N_PICS = readFiles("pic/SideS/", aPictures, N_PICS);
+    int N_PICS = 14;
+    Picture aPictures[N_PICS];
     //Кузова
     //Как насчет некого стандарта размеров и положения деталей?
     //Машины 800 шириной, колеса 100 шириной, бампер...
-    /*aPictures[0] = {100, 400, "pic/Cars/Audi R8.bmp"};
+    aPictures[0] = {100, 400, "pic/Cars/Audi R8.bmp"};
     aPictures[1] = {100, 400, "pic/Cars/Chery Tiggo.bmp"};
     aPictures[2] = {100, 400, "pic/Cars/Dodge Ram.bmp"};
     aPictures[3] = {100, 400, "pic/Cars/Formula E.bmp"};
@@ -155,7 +130,7 @@ int main()
     aPictures[10] = {150, 600, "pic/Wheels/Continental.bmp"};
     aPictures[11] = {150, 600, "pic/Wheels/bbs.bmp"        };
     aPictures[12] = {150, 600, "pic/Wheels/Hankook.bmp"    };
-    aPictures[13] = {150, 600, "pic/Wheels/GoodYear.bmp"   };*/
+    aPictures[13] = {150, 600, "pic/Wheels/GoodYear.bmp"   };
     int nomer = -100;
 
     //Расчет ширины, высоты, загрузка картинок
@@ -171,31 +146,11 @@ int main()
         //Модель
         aPictures[z].btn2 = address.substr(pos2 + 1, pos3-pos2-1);
 
-        aPictures[z].image = txLoadImage(aPictures[z].address.c_str());
-        aPictures[z].height = getHeight(aPictures[z].address.c_str());
-        aPictures[z].width = getWidth(aPictures[z].address.c_str());
-
-        if (aPictures[z].btn == "Cars")
-        {
-            aPictures[z].x = 150;
-            aPictures[z].y = 400;
-        }
-
-           if (aPictures[z].btn == "Wheels")
-        {
-            aPictures[z].x = 200;
-            aPictures[z].y = 500;
-        }
-           if (aPictures[z].btn == "Wheels2")
-        {
-            aPictures[z].x = 600;
-            aPictures[z].y = 500;
-        }
-            if (aPictures[z].btn == "SideS")
-        {
-            aPictures[z].x = 400;
-            aPictures[z].y = 500;
-        }
+        aPictures[z].image = txLoadImage(aPictures[z].address);
+        aPictures[z].height = getHeight(aPictures[z].address);
+        aPictures[z].width = getWidth(aPictures[z].address);
+        aPictures[z].heightPic = getHeight(aPictures[z].address);
+        aPictures[z].widthPic = getWidth(aPictures[z].address);
 
         //Можно и координаты здесь же считать (если категорию добавить)
     }
@@ -204,8 +159,18 @@ int main()
     Button btn[N_BTN];
     btn[0] = {  "Wheels",  0 };
     //Когда уже остальные кнопки активируете?
-    btn[1] = { "Wheels2",  0};
-    btn[2] = { "SideS",  0,};
+    btn[1] = { "БАМПЕР ЗАД",  5,
+                   {{ "лпмеуп1", 0},
+                    { "лпмеуп2", 1},
+                    { "лпмеуп3", 2},
+                    { "лпмеуп4", 3},
+                    { "лпмеуп5", 4}}};
+    btn[2] = { "БАМПЕР ПЕР",  5,
+                   {{ "лпмеуп1", 0},
+                    { "лпмеуп2", 1},
+                    { "лпмеуп3", 2},
+                    { "лпмеуп4", 3},
+                    { "лпмеуп5", 4}}};
     btn[3] = { "КОЛЁСА",      5,
                    {{ "лпмеуп1", 0},
                     { "лпмеуп2", 1},
@@ -237,20 +202,6 @@ int main()
             int nomer = btn[0].n_vars;
             btn[0].variants[nomer]={aPictures[z].btn2.c_str(), z};
             btn[0].n_vars = btn[0].n_vars + 1;
-        }
-
-         if (strcmp(aPictures[z].btn.c_str(), "Wheels2") == 0)
-        {
-            int nomer = btn[1].n_vars;
-            btn[1].variants[nomer]={aPictures[z].btn2.c_str(), z};
-            btn[1].n_vars = btn[1].n_vars + 1;
-        }
-
-         if (strcmp(aPictures[z].btn.c_str(), "SideS") == 0)
-        {
-            int nomer = btn[2].n_vars;
-            btn[2].variants[nomer]={aPictures[z].btn2.c_str(), z};
-            btn[2].n_vars = btn[2].n_vars + 1;
         }
     }
 
@@ -331,6 +282,18 @@ int main()
             }
         }
 
+        if(GetAsyncKeyState(VK_ADD))
+        {
+            aPictures[nomer].widthPic = aPictures[nomer].widthPic * 1.01;
+            aPictures[nomer].heightPic = aPictures[nomer].heightPic * 1.01;
+        }
+
+        if(GetAsyncKeyState(VK_SUBTRACT))
+        {
+            aPictures[nomer].widthPic = aPictures[nomer].widthPic / 1.01;
+            aPictures[nomer].heightPic = aPictures[nomer].heightPic / 1.01;
+        }
+
         //Рисование частей машины
         for (int i = 0; i < N_PICS; i = i + 1)
         {
@@ -352,13 +315,13 @@ int main()
         }
 
         if (GetAsyncKeyState(VK_LEFT) and nomer >= 0)
-            aPictures[nomer].x = aPictures[nomer].x-10;
+            aPictures[nomer].x = aPictures[nomer].x-2;
         if(GetAsyncKeyState(VK_RIGHT) and nomer >= 0)
-            aPictures[nomer].x = aPictures[nomer].x+10;
+            aPictures[nomer].x = aPictures[nomer].x+2;
         if(GetAsyncKeyState(VK_UP) and nomer >= 0)
-            aPictures[nomer].y = aPictures[nomer].y-10;
+            aPictures[nomer].y = aPictures[nomer].y-2;
         if(GetAsyncKeyState(VK_DOWN) and nomer >= 0)
-            aPictures[nomer].y = aPictures[nomer].y+10;
+            aPictures[nomer].y = aPictures[nomer].y+2;
 
         txSleep (15);
         txEnd ();
