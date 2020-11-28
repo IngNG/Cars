@@ -75,6 +75,8 @@ struct Picture
     HDC image;
     int width;
     int height;
+    int widthPic;
+    int heightPic;
     bool visible;
     string btn;
     string btn2;
@@ -82,7 +84,7 @@ struct Picture
 
 void drawPicture(Picture pct)
 {
-    Win32::TransparentBlt(txDC(), pct.x, pct.y, pct.width, pct.height, pct.image, 0, 0, pct.width, pct.height, TX_WHITE);
+    Win32::TransparentBlt(txDC(), pct.x, pct.y, pct.widthPic, pct.heightPic, pct.image, 0, 0, pct.width, pct.height, TX_WHITE);
 }
 
 int getWidth(const char* adress)
@@ -174,6 +176,8 @@ int main()
         aPictures[z].image = txLoadImage(aPictures[z].address.c_str());
         aPictures[z].height = getHeight(aPictures[z].address.c_str());
         aPictures[z].width = getWidth(aPictures[z].address.c_str());
+        aPictures[z].heightPic = getHeight(aPictures[z].address.c_str());
+        aPictures[z].widthPic = getWidth(aPictures[z].address.c_str());
 
         if (aPictures[z].btn == "Cars")
         {
@@ -188,7 +192,7 @@ int main()
         }
            if (aPictures[z].btn == "Wheels2")
         {
-            aPictures[z].x = 600;
+            aPictures[z].x = 700;
             aPictures[z].y = 500;
         }
             if (aPictures[z].btn == "SideS")
@@ -359,6 +363,18 @@ int main()
             aPictures[nomer].y = aPictures[nomer].y-10;
         if(GetAsyncKeyState(VK_DOWN) and nomer >= 0)
             aPictures[nomer].y = aPictures[nomer].y+10;
+
+        if (GetAsyncKeyState(VK_ADD))
+        {
+            aPictures[nomer].widthPic = aPictures[nomer].widthPic * 1.01;
+            aPictures[nomer].heightPic = aPictures[nomer].heightPic * 1.01;
+        }
+
+        if (GetAsyncKeyState(VK_SUBTRACT))
+        {
+            aPictures[nomer].widthPic = aPictures[nomer].widthPic / 1.01;
+            aPictures[nomer].heightPic = aPictures[nomer].heightPic / 1.01;
+        }
 
         txSleep (15);
         txEnd ();
