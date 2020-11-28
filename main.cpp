@@ -44,7 +44,7 @@ struct Button
 {
     const char* text;
     int n_vars;
-    Button2 variants[10];
+    Button2 variants[100];
     int x;
     int y;
     bool pressed;
@@ -136,6 +136,7 @@ int main()
     int N_PICS = 0;
     Picture aPictures[1123];
     N_PICS = readFiles("pic/Cars/", aPictures, N_PICS);
+    N_PICS = readFiles("pic/Gun/", aPictures, N_PICS);
     N_PICS = readFiles("pic/Wheels/", aPictures, N_PICS);
     N_PICS = readFiles("pic/Wheels2/", aPictures, N_PICS);
     N_PICS = readFiles("pic/SideS/", aPictures, N_PICS);
@@ -216,12 +217,7 @@ int main()
                     { "лпмеуп3", 2},
                     { "лпмеуп4", 3},
                     { "лпмеуп5", 4}}};
-    btn[4] = { "ШИПЫ",        5,
-                   {{ "шипы1"  , 0},
-                    { "шипы2"  , 1},
-                    { "шипы3"  , 2},
-                    { "шипы4"  , 3},
-                    { "шипы5"  , 4}}};
+    btn[4] = { "Gun",   0,};
     btn[5] = { "Cars",       0};
 
     //Формируем кнопки к разделам
@@ -233,6 +229,13 @@ int main()
             int nomer = btn[5].n_vars;
             btn[5].variants[nomer]={aPictures[z].btn2.c_str(), z};
             btn[5].n_vars = btn[5].n_vars + 1;
+        }
+
+        if (strcmp(aPictures[z].btn.c_str(), "Gun") == 0)
+        {
+            int nomer = btn[4].n_vars;
+            btn[4].variants[nomer]={aPictures[z].btn2.c_str(), z};
+            btn[4].n_vars = btn[4].n_vars + 1;
         }
 
         //Добавляем кнопки колес
@@ -356,24 +359,24 @@ int main()
         }
 
         if (GetAsyncKeyState(VK_LEFT) and nomer >= 0)
-            aPictures[nomer].x = aPictures[nomer].x-10;
+            aPictures[nomer].x = aPictures[nomer].x-5;
         if(GetAsyncKeyState(VK_RIGHT) and nomer >= 0)
-            aPictures[nomer].x = aPictures[nomer].x+10;
+            aPictures[nomer].x = aPictures[nomer].x+5;
         if(GetAsyncKeyState(VK_UP) and nomer >= 0)
-            aPictures[nomer].y = aPictures[nomer].y-10;
+            aPictures[nomer].y = aPictures[nomer].y-5;
         if(GetAsyncKeyState(VK_DOWN) and nomer >= 0)
-            aPictures[nomer].y = aPictures[nomer].y+10;
+            aPictures[nomer].y = aPictures[nomer].y+5;
 
         if (GetAsyncKeyState(VK_ADD))
         {
-            aPictures[nomer].widthPic = aPictures[nomer].widthPic * 1.01;
-            aPictures[nomer].heightPic = aPictures[nomer].heightPic * 1.01;
+            aPictures[nomer].widthPic = aPictures[nomer].widthPic + 15;
+            aPictures[nomer].heightPic = aPictures[nomer].heightPic + 5;
         }
 
         if (GetAsyncKeyState(VK_SUBTRACT))
         {
-            aPictures[nomer].widthPic = aPictures[nomer].widthPic / 1.01;
-            aPictures[nomer].heightPic = aPictures[nomer].heightPic / 1.01;
+            aPictures[nomer].widthPic = aPictures[nomer].widthPic - 15;
+            aPictures[nomer].heightPic = aPictures[nomer].heightPic - 5;
         }
 
         txSleep (15);
