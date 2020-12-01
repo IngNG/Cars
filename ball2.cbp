@@ -33,6 +33,8 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="Button.cpp" />
+		<Unit filename="Files.cpp" />
+		<Unit filename="Picture.cpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

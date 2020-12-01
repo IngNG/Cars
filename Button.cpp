@@ -38,7 +38,7 @@ struct Button
 {
     const char* text;
     int n_vars;
-    Button2 variants[10];
+    Button2 variants[100];
     int x;
     int y;
     bool pressed;
