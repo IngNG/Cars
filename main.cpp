@@ -1,4 +1,5 @@
 #include "TXLib.h"
+#include "Button.cpp"
 #include <stdlib.h>
 #include <dirent.h>
 #include <iostream>
@@ -6,67 +7,6 @@
 using namespace std;
 
 //Можно и библиотеки создать под них
-struct Button2
-{
-    const char* text;
-    int n_pic;
-    int x;
-    int y;
-
-    void draw()
-    {
-        txSelectFont("Comic Sans MS", 20);
-        txRectangle(x, y, x + 200, y + 30);
-        txDrawText (x, y, x + 200, y + 30, text);
-    }
-
-    bool cliiiick()
-    {
-            if (txMouseButtons() == 1 &&
-                txMouseX() >= x       &&  txMouseY() >= y     &&
-                txMouseX() <= x + 200 &&  txMouseY() <= y + 30)
-                return true;
-            else
-                return false;
-    }
-
-    bool focus()
-    {
-            if (txMouseX() >= x       &&  txMouseY() >= y   &&
-                txMouseX() <= x + 200 &&  txMouseY() <= y + 30)
-                return true;
-            else
-                return false;
-    }
-};
-
-struct Button
-{
-    const char* text;
-    int n_vars;
-    Button2 variants[100];
-    int x;
-    int y;
-    bool pressed;
-
-    void draw()
-    {
-        txSelectFont("Comic Sans MS", 30);
-        txRectangle(x, y, x + 200, y + 80);
-        txDrawText (x, y, x + 200, y + 80, text);
-    }
-
-    bool cliiiiick()
-    {
-            if (txMouseButtons() == 1 &&
-                txMouseX() >= x       &&  txMouseY() >= 0   &&
-                txMouseX() <= x + 200 &&  txMouseY() <= 80)
-                return true;
-            else
-                return false;
-    }
-};
-
 struct Picture
 {
     int x;
@@ -140,6 +80,8 @@ int main()
     N_PICS = readFiles("pic/Wheels/", aPictures, N_PICS);
     N_PICS = readFiles("pic/Wheels2/", aPictures, N_PICS);
     N_PICS = readFiles("pic/SideS/", aPictures, N_PICS);
+
+    //Как насчет удалить следующие 20 строк?
     //Кузова
     //Как насчет некого стандарта размеров и положения деталей?
     //Машины 800 шириной, колеса 100 шириной, бампер...
@@ -205,7 +147,8 @@ int main()
         //Можно и координаты здесь же считать (если категорию добавить)
     }
 //https://github.com/IngCenter/PixelCars
-    int N_BTN = 6;
+    //Сам-то сообразишь, что кнопок больше стало?
+    int N_BTN = 7;
     Button btn[N_BTN];
     btn[0] = {  "Wheels",  0 };
     //Когда уже остальные кнопки активируете?
@@ -217,8 +160,10 @@ int main()
                     { "лпмеуп3", 2},
                     { "лпмеуп4", 3},
                     { "лпмеуп5", 4}}};
+    //Пушки обрезать бы
     btn[4] = { "Gun",   0,};
     btn[5] = { "Cars",       0};
+    btn[6] = { "А куда",     0};
 
     //Формируем кнопки к разделам
     for (int z = 0; z < N_PICS; z = z + 1)
@@ -275,113 +220,166 @@ int main()
         }
     }
 
+
+    string PAGE = "Редактор";
+    //На фиг вторая переменная для того же?
+    bool Help = false;
+
+
     //Сам редактор
     while (!GetAsyncKeyState(VK_ESCAPE))
     {
         txBegin ();
         txClear();
 
-        //Кнопки рисуются
-        txSetColour(TX_BLACK);
-        for (int i = 0; i < N_BTN; i = i + 1)
-            btn[i].draw();
-
-        //Клик на кнопки
-        for (int i = 0; i < N_BTN; i = i + 1)
+        if (Help)
         {
-            //А как насчет деактивировать все остальные кнопки?
-            if (btn[i].cliiiiick())
+            txBegin();
+            if (PAGE == "Справка")
             {
-                btn[i].pressed = !btn[i].pressed;
-                txSleep(200);
-            }
-        }
+                txSetFillColor(TX_WHITE);
+                txSetColor(TX_BLACK);
+                txClear();
+                txDrawText(1000, 600, 1200, 700, "Начать!");
+                txDrawText(100, 100, 1200, 500,
+                      "Привет, Страдалец. \n"
 
-        //Нажаты колеса
-        for (int z = 0; z < N_BTN; z = z + 1)
-        {
-            if (btn[z].pressed)
-            {
-                //Фокусировка на варианты
-                for (int i = 0; i < btn[0].n_vars; i = i + 1)
+                );
+
+                //Ничего, что координаты у клика и кнопки не совппадают?
+                if (txMouseButtons() == 1 &&
+                    txMouseX() >= 500 && txMouseY() >= 600 &&
+                    txMouseX() <= 500 && txMouseY() <= 600)
                 {
-                    if (btn[z].variants[i].focus())
-                    {
-                        int n = btn[z].variants[i].n_pic;
-                        //А если учитывать пропорции?
-                        Win32::TransparentBlt (txDC(),200,100,200,200,aPictures[n].image,0,0,aPictures[n].width,aPictures[n].height, TX_WHITE);
-                    }
+                    PAGE = "Редактор";
+                    txSleep(500);
+
+                    //Тогда уж сперва прямоугольник, потом переход на страницу
+                    txSetFillColour(TX_GRAY);
+                    txSetColour(TX_BLACK);
+                    txRectangle(0,0,1532,150);
                 }
-
-
-                //Клик на варианты
-                for (int i=0; i < btn[z].n_vars; i=i+1)
-                {
-                    if (btn[z].variants[i].cliiiick())
-                    {
-                        int n = btn[z].variants[i].n_pic;
-
-
-                        //Все хед1 с такой же категорией скрыть
-                        for (int k = 0; k < N_PICS; k++)
-                            if (aPictures[n].btn == aPictures[k].btn && n != k)
-                                aPictures[k].visible = false;
-
-                        aPictures[n].visible = !aPictures[n].visible;
-                        txSleep(200);
-                    }
-                }
-
-                //Рисование вариантов
-                for (int i = 0; i < btn[z].n_vars; i = i + 1)
-                    btn[z].variants[i].draw();
             }
         }
 
-        //Рисование частей машины
-        for (int i = 0; i < N_PICS; i = i + 1)
+        if (PAGE == "Редактор")
         {
-            if (aPictures[i].visible)
+            //По-другому у вас клик на кнопку пишется
+            /*if (Click(btn[6].x, btn[6].y))
             {
-                drawPicture(aPictures[i]);
+                PAGE = "Справка";
+                txSleep(500);
+            } */
+
+
+
+            //Кнопки рисуются
+            txSetColour(TX_BLACK);
+            for (int i = 0; i < N_BTN; i = i + 1)
+                btn[i].draw();
+
+            //Клик на кнопки
+            for (int i = 0; i < N_BTN; i = i + 1)
+            {
+                //А как насчет деактивировать все остальные кнопки?
+                if (btn[i].cliiiiick())
+                {
+                    btn[i].pressed = !btn[i].pressed;
+                    txSleep(200);
+                }
             }
+
+            //Нажаты колеса
+            for (int z = 0; z < N_BTN; z = z + 1)
+            {
+                if (btn[z].pressed)
+                {
+                    //Фокусировка на варианты
+                    for (int i = 0; i < btn[0].n_vars; i = i + 1)
+                    {
+                        if (btn[z].variants[i].focus())
+                        {
+                            int n = btn[z].variants[i].n_pic;
+                            //А если учитывать пропорции?
+                            Win32::TransparentBlt (txDC(),200,100,200,200,aPictures[n].image,0,0,aPictures[n].width,aPictures[n].height, TX_WHITE);
+                        }
+                    }
+
+
+                    //Клик на варианты
+                    for (int i=0; i < btn[z].n_vars; i=i+1)
+                    {
+                        if (btn[z].variants[i].cliiiick())
+                        {
+                            int n = btn[z].variants[i].n_pic;
+
+
+                            //Все хед1 с такой же категорией скрыть
+                            for (int k = 0; k < N_PICS; k++)
+                                if (aPictures[n].btn == aPictures[k].btn && n != k)
+                                    aPictures[k].visible = false;
+
+                            aPictures[n].visible = !aPictures[n].visible;
+                            txSleep(200);
+                        }
+                    }
+
+                    //Рисование вариантов
+                    for (int i = 0; i < btn[z].n_vars; i = i + 1)
+                        btn[z].variants[i].draw();
+                }
+            }
+
+            //Рисование частей машины
+            for (int i = 0; i < N_PICS; i = i + 1)
+            {
+                if (aPictures[i].visible)
+                {
+                    drawPicture(aPictures[i]);
+                }
+            }
+
+            //__Движение картинки__
+            for (int i = 0; i< N_PICS; i = i + 1)
+            if (txMouseButtons() == 1 &&
+            //У них вот прям такая ширина? 200?
+                txMouseX() >= aPictures[i].x       &&  txMouseY() >= aPictures[i].y       &&
+                txMouseX() <= aPictures[i].x + 200 &&  txMouseY() <= aPictures[i].y + 200 &&
+                aPictures[i].visible)
+            {
+                nomer = i;
+            }
+
+            if (GetAsyncKeyState(VK_LEFT) and nomer >= 0)
+                aPictures[nomer].x = aPictures[nomer].x-5;
+            if(GetAsyncKeyState(VK_RIGHT) and nomer >= 0)
+                aPictures[nomer].x = aPictures[nomer].x+5;
+            if(GetAsyncKeyState(VK_UP) and nomer >= 0)
+                aPictures[nomer].y = aPictures[nomer].y-5;
+            if(GetAsyncKeyState(VK_DOWN) and nomer >= 0)
+                aPictures[nomer].y = aPictures[nomer].y+5;
+
+            if (GetAsyncKeyState(VK_ADD))
+            {
+                aPictures[nomer].widthPic = aPictures[nomer].widthPic + 15;
+                aPictures[nomer].heightPic = aPictures[nomer].heightPic + 5;
+            }
+
+            if (GetAsyncKeyState(VK_SUBTRACT))
+            {
+                aPictures[nomer].widthPic = aPictures[nomer].widthPic - 15;
+                aPictures[nomer].heightPic = aPictures[nomer].heightPic - 5;
+            }
+
         }
 
-        //__Движение картинки__
-        for (int i = 0; i< N_PICS; i = i + 1)
-        if (txMouseButtons() == 1 &&
-        //У них вот прям такая ширина? 200?
-            txMouseX() >= aPictures[i].x       &&  txMouseY() >= aPictures[i].y       &&
-            txMouseX() <= aPictures[i].x + 200 &&  txMouseY() <= aPictures[i].y + 200 &&
-            aPictures[i].visible)
-        {
-            nomer = i;
-        }
-
-        if (GetAsyncKeyState(VK_LEFT) and nomer >= 0)
-            aPictures[nomer].x = aPictures[nomer].x-5;
-        if(GetAsyncKeyState(VK_RIGHT) and nomer >= 0)
-            aPictures[nomer].x = aPictures[nomer].x+5;
-        if(GetAsyncKeyState(VK_UP) and nomer >= 0)
-            aPictures[nomer].y = aPictures[nomer].y-5;
-        if(GetAsyncKeyState(VK_DOWN) and nomer >= 0)
-            aPictures[nomer].y = aPictures[nomer].y+5;
-
-        if (GetAsyncKeyState(VK_ADD))
-        {
-            aPictures[nomer].widthPic = aPictures[nomer].widthPic + 15;
-            aPictures[nomer].heightPic = aPictures[nomer].heightPic + 5;
-        }
-
-        if (GetAsyncKeyState(VK_SUBTRACT))
-        {
-            aPictures[nomer].widthPic = aPictures[nomer].widthPic - 15;
-            aPictures[nomer].heightPic = aPictures[nomer].heightPic - 5;
-        }
-
+        //Пауза и txClear у всех страниц общие
         txSleep (15);
         txEnd ();
     }
+
     //Картинки можно и удалить
+    //txDeleteDC...
+
     return 0;
 }
