@@ -1,8 +1,42 @@
 /// \file Files.cpp
+
+// Библиотеки
 #include "TXLib.h"
 #include "Picture.cpp"
+#include <stdlib.h>
+#include <dirent.h>
+#include <iostream>
+#include <fstream>
+using namespace std;
 
-///Чтение списка файлов из папки
+/// \brief Расчет ширины картинки по адресу
+/// \param adress Адрес картинки
+/// \return Ширина картинки
+int getWidth(const char* adress)
+{
+    char header[54];
+    ifstream bmp;
+    bmp.open(adress, ios::in | ios::binary);
+    bmp.read(header, 54);
+    int shirina = *(int *)&header[18];
+    return shirina;
+}
+
+int getHeight(const char* adress)
+{
+    char header[54];
+    ifstream bmp;
+    bmp.open(adress, ios::in | ios::binary);
+    bmp.read(header, 54);
+    int vysota = *(int *)&header[22];
+    return vysota;
+}
+
+
+///\brief Чтение списка файлов из папки
+///\param address Адрес папки с картинками
+///\param aPictures Массив картинок
+///\param N Сколько картинок
 int readFiles(const char* address, Picture* aPictures, int N)
 {
     DIR *dir;
@@ -23,11 +57,12 @@ int readFiles(const char* address, Picture* aPictures, int N)
      return N;
 }
 
-///Поиск картинок
+///\brief Поиск картинок
 ///\param aPictures Массив картинок
-///\return N_PICS КОличество картинок
+///\return N_PICS Количество картинок
 int fillPictures(Picture* aPictures)
 {
+    ///Чтение списка картинок
     int N_PICS = 0;
     N_PICS = readFiles("pic/Cars/", aPictures, N_PICS);
     N_PICS = readFiles("pic/Gun/", aPictures, N_PICS);

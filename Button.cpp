@@ -1,12 +1,16 @@
 #include "TXLib.h"
 
+///Кнопка для варианта детали (Лада 2105)
 struct Button2
 {
+    ///Текст кнопки (название детали)
     const char* text;
+    ///Номер картинки, которая связана с кнопкой
     int n_pic;
     int x;
     int y;
 
+    ///Рисование кнопки
     void draw()
     {
         txSelectFont("Comic Sans MS", 20);
@@ -34,6 +38,7 @@ struct Button2
     }
 };
 
+///Кнопка для категории (колеса)
 struct Button
 {
     const char* text;

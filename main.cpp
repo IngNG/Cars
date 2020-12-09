@@ -1,44 +1,25 @@
+///\file main.cpp
+
+// Библиотеки
 #include "TXLib.h"
 #include "Button.cpp"
-#include "Picture.cpp"
+#include "Files.cpp"
 #include <stdlib.h>
 #include <dirent.h>
 #include <iostream>
-#include <fstream> /// Библиотеки
+#include <fstream>
 using namespace std;
 
-
-int getWidth(const char* adress)
-{
-    char header[54];
-    ifstream bmp;
-    bmp.open(adress, ios::in | ios::binary);
-    bmp.read(header, 54);
-    int shirina = *(int *)&header[18];
-    return shirina;
-}
-
-int getHeight(const char* adress)
-{
-    char header[54];
-    ifstream bmp;
-    bmp.open(adress, ios::in | ios::binary);
-    bmp.read(header, 54);
-    int vysota = *(int *)&header[22];
-    return vysota;
-}
 
 int main()
 {
     txCreateWindow(1200,720);
 
-
-
-
+    //Массив вариантов деталей
     Picture aPictures[1123];
     int N_PICS = fillPictures(aPictures);
 
-
+    int nomer = -100;
 
     int N_BTN = 7;
     Button btn[N_BTN];

@@ -1,6 +1,5 @@
 /// \file Picture.cpp
 ///Библиотека работы с картинками
-#pragma once
 #include "TXLib.h"
 
 ///Структура "картинка"
