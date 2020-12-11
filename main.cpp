@@ -14,6 +14,7 @@ using namespace std;
 int main()
 {
     txCreateWindow(1200,720);
+    txTextCursor(false);
 
     //Массив вариантов деталей
     Picture aPictures[1123];
@@ -30,7 +31,7 @@ int main()
     ///Пушки обрезать бы
     btn[4] = { "Gun",   0,};
     btn[5] = { "Cars",       0};
-    btn[6] = { "А куда",     0};
+    btn[6] = { "СправОЧКА",     0};
 
     ///Формируем кнопки к разделам
     for (int z = 0; z < N_PICS; z = z + 1)
@@ -76,7 +77,7 @@ int main()
     for (int i = 0; i < N_BTN; i++)
     {
         btn[i].pressed = false;
-        btn[i].x = 200 * i;
+        btn[i].x = 160 * i;
         btn[i].y = 0;
         for (int j = 0; j < btn[i].n_vars; j++)
         {
@@ -87,8 +88,6 @@ int main()
 
 
     string PAGE = "Редактор";
-    bool Help = false;
-
 
     ///редактор
     while (!GetAsyncKeyState(VK_ESCAPE))
@@ -96,43 +95,40 @@ int main()
         txBegin ();
         txClear();
 
-        if (Help)
+        if (PAGE == "Справка")
         {
-            txBegin();
-            if (PAGE == "Справка")
+            txSetFillColor(TX_WHITE);
+            txSetColor(TX_BLACK);
+            txClear();
+            txDrawText(100, 600, 900, 700, "Назад");
+            txDrawText(100, 100, 1000, 500,
+                  "Привет, Страдалец. \n"
+                  "Это редактор машин\n"
+                  "Если хочешь двигать детальки или машины, нажми на обьект, чтобы выделить его и используй стрелки на клавиатуре \n"
+                  "Чтобы Увеличить/уменьшить детальки или машины, нажми на обьект, чтобы выделить его, и используй Кнопки + и - на нампаде \n"
+
+            );
+
+
+            if (txMouseButtons() == 1 &&
+                txMouseX() >= 100 && txMouseY() >= 600 &&
+                txMouseX() <= 900 && txMouseY() <= 700)
             {
-                txSetFillColor(TX_WHITE);
-                txSetColor(TX_BLACK);
-                txClear();
-                txDrawText(1000, 600, 1200, 700, "Начать!");
-                txDrawText(100, 100, 1200, 500,
-                      "Привет, Страдалец. \n"
-
-                );
-
-
-                if (txMouseButtons() == 1 &&
-                    txMouseX() >= 500 && txMouseY() >= 600 &&
-                    txMouseX() <= 500 && txMouseY() <= 600)
-                {
-                    PAGE = "Редактор";
-                    txSleep(500);
-
-
-                    txSetFillColour(TX_GRAY);
-                    txSetColour(TX_BLACK);
-                    txRectangle(0,0,1532,150);
-                }
+                PAGE = "Редактор";
+                txSleep(500);
             }
         }
 
         if (PAGE == "Редактор")
         {
+            if (btn[6].click())
+            {
+                PAGE = "Справка";
+                txSleep(500);
+            }
 
 
-
-
-            ///Кнопки рисуются
+            ///Рисование кнопок
             txSetColour(TX_BLACK);
             for (int i = 0; i < N_BTN; i = i + 1)
                 btn[i].draw();
@@ -140,7 +136,7 @@ int main()
             ///Клик на кнопки
             for (int i = 0; i < N_BTN; i = i + 1)
             {
-                if (btn[i].cliiiiick())
+                if (btn[i].click())
                 {
                     btn[i].pressed = !btn[i].pressed;
                     txSleep(200);
@@ -166,7 +162,7 @@ int main()
                     ///Клик на варианты
                     for (int i=0; i < btn[z].n_vars; i=i+1)
                     {
-                        if (btn[z].variants[i].cliiiick())
+                        if (btn[z].variants[i].click())
                         {
                             int n = btn[z].variants[i].n_pic;
 
@@ -231,7 +227,6 @@ int main()
         txSleep (15);
         txEnd ();
     }
-
 
     return 0;
 }

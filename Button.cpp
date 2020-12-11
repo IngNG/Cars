@@ -14,27 +14,27 @@ struct Button2
     void draw()
     {
         txSelectFont("Comic Sans MS", 20);
-        txRectangle(x, y, x + 200, y + 30);
-        txDrawText (x, y, x + 200, y + 30, text);
+        txRectangle(x, y, x + 160, y + 30);
+        txDrawText (x, y, x + 160, y + 30, text);
     }
 
-    bool cliiiick()
+    bool click()
     {
-            if (txMouseButtons() == 1 &&
-                txMouseX() >= x       &&  txMouseY() >= y     &&
-                txMouseX() <= x + 200 &&  txMouseY() <= y + 30)
-                return true;
-            else
-                return false;
+        if (txMouseButtons() == 1 &&
+            txMouseX() >= x       &&  txMouseY() >= y     &&
+            txMouseX() <= x + 160 &&  txMouseY() <= y + 30)
+            return true;
+        else
+            return false;
     }
 
     bool focus()
     {
-            if (txMouseX() >= x       &&  txMouseY() >= y   &&
-                txMouseX() <= x + 200 &&  txMouseY() <= y + 30)
-                return true;
-            else
-                return false;
+        if (txMouseX() >= x       &&  txMouseY() >= y   &&
+            txMouseX() <= x + 160 &&  txMouseY() <= y + 30)
+            return true;
+        else
+            return false;
     }
 };
 
@@ -47,19 +47,19 @@ struct Button
     int x;
     int y;
     bool pressed;
-
+///Рисование кнопок
     void draw()
     {
         txSelectFont("Comic Sans MS", 30);
-        txRectangle(x, y, x + 200, y + 80);
-        txDrawText (x, y, x + 200, y + 80, text);
+        txRectangle(x, y, x + 160, y + 80);
+        txDrawText (x, y, x + 160, y + 80, text);
     }
-
-    bool cliiiiick()
+///клик на кнопки
+    bool click()
     {
             if (txMouseButtons() == 1 &&
                 txMouseX() >= x       &&  txMouseY() >= 0   &&
-                txMouseX() <= x + 200 &&  txMouseY() <= 80)
+                txMouseX() <= x + 160 &&  txMouseY() <= 80)
                 return true;
             else
                 return false;
