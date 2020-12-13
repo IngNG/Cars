@@ -149,12 +149,13 @@ int main()
                 if (btn[z].pressed)
                 {
                     ///Фокусиров
-                    for (int i = 0; i < btn[0].n_vars; i = i + 1)
+                    for (int i = 0; i < btn[z].n_vars; i = i + 1)
                     {
                         if (btn[z].variants[i].focus())
                         {
                             int n = btn[z].variants[i].n_pic;
-                            Win32::TransparentBlt (txDC(),200,100,200,200,aPictures[n].image,0,0,aPictures[n].width,aPictures[n].height, TX_WHITE);
+                            int x = (z <= N_BTN / 2) ? btn[z].x + 200 : btn[z].x - 200;
+                            Win32::TransparentBlt (txDC(),x, 100, 200, 200 * aPictures[n].height / aPictures[n].width,aPictures[n].image,0,0,aPictures[n].width,aPictures[n].height, TX_WHITE);
                         }
                     }
 

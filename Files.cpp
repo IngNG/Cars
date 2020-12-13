@@ -64,8 +64,8 @@ int fillPictures(Picture* aPictures)
 {
     ///Чтение списка картинок
     int N_PICS = 0;
-    N_PICS = readFiles("pic/Cars/", aPictures, N_PICS);
     N_PICS = readFiles("pic/Gun/", aPictures, N_PICS);
+    N_PICS = readFiles("pic/Cars/", aPictures, N_PICS);
     N_PICS = readFiles("pic/Wheels/", aPictures, N_PICS);
     N_PICS = readFiles("pic/Wheels2/", aPictures, N_PICS);
     N_PICS = readFiles("pic/SideS/", aPictures, N_PICS);
