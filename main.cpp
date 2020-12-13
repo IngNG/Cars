@@ -194,8 +194,10 @@ int main()
             ///Движение картинки
             for (int i = 0; i< N_PICS; i = i + 1)
             if (txMouseButtons() == 1 &&
-                txMouseX() >= aPictures[i].x       &&  txMouseY() >= aPictures[i].y       &&
-                txMouseX() <= aPictures[i].x + 200 &&  txMouseY() <= aPictures[i].y + 200 &&
+                txMouseX() >= aPictures[i].x       &&
+                txMouseY() >= aPictures[i].y       &&
+                txMouseX() <= aPictures[i].x + aPictures[i].widthPic &&
+                txMouseY() <= aPictures[i].y + aPictures[i].heightPic  &&
                 aPictures[i].visible)
             {
                 nomer = i;
@@ -212,14 +214,14 @@ int main()
 
             if (GetAsyncKeyState(VK_ADD))
             {
-                aPictures[nomer].widthPic = aPictures[nomer].widthPic + 15;
-                aPictures[nomer].heightPic = aPictures[nomer].heightPic + 5;
+                aPictures[nomer].widthPic = aPictures[nomer].widthPic * 1.02;
+                aPictures[nomer].heightPic = aPictures[nomer].heightPic * 1.02;
             }
 
             if (GetAsyncKeyState(VK_SUBTRACT))
             {
-                aPictures[nomer].widthPic = aPictures[nomer].widthPic - 15;
-                aPictures[nomer].heightPic = aPictures[nomer].heightPic - 5;
+                aPictures[nomer].widthPic = aPictures[nomer].widthPic * 0.98;
+                aPictures[nomer].heightPic = aPictures[nomer].heightPic *0.98;
             }
 
         }
